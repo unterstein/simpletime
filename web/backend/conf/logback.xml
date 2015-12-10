@@ -14,6 +14,7 @@
   -->
   <logger name="play" level="INFO" />
   <logger name="application" level="DEBUG" />
+  <logger name="neo4jplugin.Neo4jPlugin" level="DEBUG" />
 
   <root level="ERROR">
     <appender-ref ref="STDOUT" />
