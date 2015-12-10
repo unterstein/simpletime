@@ -34,7 +34,7 @@ object Global extends GlobalSettings {
   override def onStop(app: Application): Unit = {
     super.onStop(app)
 
-    hooks.map(f => f.call())
+    hooks.map(f => if (f != null) f.call())
   }
 
 }
