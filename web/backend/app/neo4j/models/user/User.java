@@ -19,13 +19,6 @@ public class User extends HashedEntity {
 
   public String password;
 
-  public static User create(String email, String password) {
-    User user = new User();
-    user.email = email;
-    user.password = HashHelper.saltedHash(password);
-    return user;
-  }
-
   public boolean checkPassword(String password) {
     return StringUtils.equals(this.password, HashHelper.saltedHash(password));
   }

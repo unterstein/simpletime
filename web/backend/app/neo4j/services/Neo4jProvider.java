@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 public class Neo4jProvider extends Neo4jServiceProvider {
 
   @Autowired
-  public UserRepository entryRepository;
+  public UserRepository userRepository;
 
   private Neo4jProvider() {
   }

@@ -4,6 +4,7 @@ import java.security.{MessageDigest, SecureRandom}
 import java.util.UUID
 
 import org.apache.commons.codec.binary.Hex
+import org.apache.commons.lang3.StringUtils
 
 /**
  * @author Johannes Unterstein (unterstein@me.com)
@@ -14,13 +15,21 @@ object HashHelper {
 
   def uuid(): String = UUID.randomUUID().toString.replace("-", "")
 
+  private val SEPARATOR = "-"
+
   def saltedHash(in: String): String = {
     val saltAsArray: Array[Byte] = new Array[Byte](5)
     random.nextBytes(saltAsArray)
 
     val salt: String = new String(Hex.encodeHex(saltAsArray))
     val digest: String = sha(salt + in)
-    salt + "-" + digest
+    salt + SEPARATOR + digest
+  }
+
+  def saltedHashValid(saltedHash: String, in: String): Boolean = {
+    val salt = StringUtils.substringBefore(saltedHash, SEPARATOR)
+    val digest = sha(salt + in)
+    StringUtils.equals(StringUtils.substringAfter(saltedHash, SEPARATOR), digest)
   }
 
   def sha(in: String): String = {

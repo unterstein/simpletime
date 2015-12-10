@@ -10,5 +10,7 @@ import java.util.List;
  */
 public interface UserRepository extends GraphRepository<User> {
 
-  List<User> findByHash(String hash);
+  User findByEmail(String email);
+
+  User findByHash(String hash);
 }

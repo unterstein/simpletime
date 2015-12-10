@@ -1,11 +1,10 @@
 package controllers
 
-import play.api.mvc._
+class ApplicationController extends BaseController {
 
-class ApplicationController extends Controller {
-
-  def index = Action {
-    Ok(views.html.ok("ok"))
+  def index = BaseAction {
+    implicit request =>
+      Ok("ok")
   }
 
 }
