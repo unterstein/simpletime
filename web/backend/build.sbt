@@ -2,7 +2,7 @@ import play.sbt.PlayImport._
 import play.sbt.PlayScala
 import play.sbt.routes.RoutesKeys._
 
-name := """simpletime"""
+name := "simpletime"
 
 version := "1.0-SNAPSHOT"
 
