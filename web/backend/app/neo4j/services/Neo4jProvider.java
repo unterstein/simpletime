@@ -10,15 +10,15 @@ import org.springframework.stereotype.Component;
  * @author Johannes Unterstein (unterstein@me.com)
  */
 @Component
-public class DataBaseServiceProvider extends Neo4jServiceProvider {
+public class Neo4jProvider extends Neo4jServiceProvider {
 
   @Autowired
   public UserRepository entryRepository;
 
-  private DataBaseServiceProvider() {
+  private Neo4jProvider() {
   }
 
-  public static DataBaseServiceProvider get() {
+  public static Neo4jProvider get() {
     return Neo4jPlugin.get();
   }
 }
