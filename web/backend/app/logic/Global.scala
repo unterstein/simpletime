@@ -1,6 +1,5 @@
 package logic
 
-import _root_.neo4jplugin.Neo4jPlugin
 import neo4jplugin.Neo4jPlugin
 import java.util
 import java.util.concurrent.Callable
