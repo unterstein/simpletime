@@ -1,9 +1,10 @@
 # simple-time
 
+just a simple time tracking app, easy to use, no nonsense
+
 ## project structure
 
 ```
-└── web
-   └── backend
-   		└──> play backend
+└── web-app
+   └──> play app
 ```
