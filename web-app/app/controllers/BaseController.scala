@@ -8,9 +8,9 @@ import play.api.mvc._
 /**
  * @author Johannes Unterstein (unterstein@me.com)
  */
-case class BaseRequest(request: Request[AnyContent], user: User)
-
 trait BaseController extends Controller {
+
+  case class BaseRequest(request: Request[AnyContent], user: User)
 
   val gson = new Gson()
 
