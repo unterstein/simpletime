@@ -3,12 +3,13 @@ package controllers
 import com.google.gson.Gson
 import neo4j.models.user.User
 import neo4j.services.Neo4jProvider
+import play.api.i18n.I18nSupport
 import play.api.mvc._
 
 /**
  * @author Johannes Unterstein (unterstein@me.com)
  */
-trait BaseController extends Controller {
+trait BaseController extends Controller with I18nSupport {
 
   case class BaseRequest(request: Request[AnyContent], user: User)
 

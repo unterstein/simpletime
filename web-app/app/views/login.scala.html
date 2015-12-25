@@ -1,0 +1,11 @@
+@()(implicit request: play.api.mvc.Request[Any], messages: Messages)
+
+@main() {
+  @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
+    <div class="form-group">
+      <label class="control-label" for="login_email">@Messages("email")</label>
+      <input class="form-control" id="login_email" type="email">
+    </div>
+  }
+
+}
