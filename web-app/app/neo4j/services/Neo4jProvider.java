@@ -1,5 +1,7 @@
 package neo4j.services;
 
+import neo4j.repositories.ProjectRepository;
+import neo4j.repositories.TimeEntryRepository;
 import neo4j.repositories.UserRepository;
 import neo4jplugin.Neo4jPlugin;
 import neo4jplugin.Neo4jServiceProvider;
@@ -14,6 +16,12 @@ public class Neo4jProvider extends Neo4jServiceProvider {
 
   @Autowired
   public UserRepository userRepository;
+
+  @Autowired
+  public ProjectRepository projectRepository;
+
+  @Autowired
+  public TimeEntryRepository timeEntryRepository;
 
   private Neo4jProvider() {
   }
