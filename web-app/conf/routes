@@ -1,5 +1,6 @@
 # Routes
 GET         /                     controllers.ApplicationController.index
+GET /signin controllers.UserController.index
 POST        /login                controllers.UserController.login
 POST        /register             controllers.UserController.register
 

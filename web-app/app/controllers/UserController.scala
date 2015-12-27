@@ -4,8 +4,8 @@ import javax.inject.Inject
 
 import logic.UserLogic
 import neo4j.services.Neo4jProvider
-import play.api.data._
 import play.api.data.Forms._
+import play.api.data._
 import play.api.i18n.MessagesApi
 
 class UserController @Inject()(messages: MessagesApi) extends BaseController {
@@ -19,6 +19,16 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
     implicit request =>
       Ok("ok")
   }
+
+  def index = BaseAction {
+    implicit request =>
+      Ok(views.html.login(UserController.loginForm, UserController.registerForm))
+  }
+
+  override def messagesApi: MessagesApi = messages
+}
+
+object UserController {
 
   case class Register(registerUrl: String, registerEmail: String, registerPassword: String, registerPassword2: String)
 
@@ -43,8 +53,6 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
       "loginPassword" -> nonEmptyText
     )(Login.apply)(Login.unapply)
         .verifying("error.signInFailed", login => UserLogic.login(login.loginEmail, login.loginPassword) != null
-    )
+        )
   )
-
-  override def messagesApi: MessagesApi = messages
 }
