@@ -5,6 +5,13 @@ login=Login
 password=Password
 repassword=Repeat password
 
+loginEmail=E-Mail
+loginPassword=Password
+
+registerEmail=E-Mail
+registerPassword=Password
+registerPassword2=Repeat Password
+
 # errors
 error.passwordNotMatch=Passwords do not match
 error.duplicateEmail=E-Mail already exists

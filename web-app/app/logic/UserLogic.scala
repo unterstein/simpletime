@@ -20,7 +20,7 @@ object UserLogic {
 
   def login(email: String, password: String): User = {
     val user = Neo4jProvider.get().userRepository.findByEmail(email)
-    if (HashHelper.saltedHashValid(user.password, password) == true) {
+    if (user != null && HashHelper.saltedHashValid(user.password, password) == true) {
       user
     } else {
       null

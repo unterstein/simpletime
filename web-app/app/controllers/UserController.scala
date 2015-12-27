@@ -12,12 +12,24 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
 
   def login = BaseAction {
     implicit request =>
-      Ok("ok")
+      UserController.loginForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.login(formWithErrors, UserController.registerForm)),
+        value => {
+          val user = Neo4jProvider.get().userRepository.findByEmail(value.loginEmail)
+          Redirect(value.loginUrl).withSession(USER_HASH -> user.hash)
+        }
+      )
   }
 
   def register = BaseAction {
     implicit request =>
-      Ok("ok")
+      UserController.registerForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.login(UserController.loginForm, formWithErrors)),
+        value => {
+          val user = UserLogic.createUser(value.registerEmail, value.registerPassword)
+          Redirect(value.registerUrl).withSession(USER_HASH -> user.hash)
+        }
+      )
   }
 
   def index = BaseAction {
