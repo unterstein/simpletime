@@ -1,2 +1,13 @@
 title=Simple time - book your time fast and easy
 email=E-Mail
+register=Register
+login=Login
+password=Password
+repassword=Repeat password
+
+# errors
+error.passwordNotMatch=Passwords do not match
+error.duplicateEmail=E-Mail already exists
+error.signInFailed=Login failed
+error.email=Email required
+error.required=Field required

@@ -1,11 +1,64 @@
 @()(implicit request: play.api.mvc.Request[Any], messages: Messages)
 
 @main() {
-  @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
-    <div class="form-group">
-      <label class="control-label" for="login_email">@Messages("email")</label>
-      <input class="form-control" id="login_email" type="email">
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="well">
+      @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
+        <fieldset>
+          <legend>@Messages("login")</legend>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="loginEmail">@Messages("email")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="loginEmail" name="loginEmail" type="email" placeholder="@Messages("email")">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="loginPassword">@Messages("password")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="loginPassword" name="loginPassword" type="password" placeholder="@Messages("password")">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+              <button type="submit" class="btn btn-primary">@Messages("login")</button>
+            </div>
+          </div>
+        </fieldset>
+      }
+      </div>
     </div>
-  }
-
+    <div class="col-xs-6">
+      <div class="well">
+      @helper.form(routes.UserController.register, 'class -> "form-horizontal") {
+        <fieldset>
+          <legend>@Messages("register")</legend>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="registerEmail">@Messages("email")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="registerEmail" name="registerEmail" type="email" placeholder="@Messages("email")">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="registerPassword">@Messages("password")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="registerPassword" name="registerPassword" type="password" placeholder="@Messages("password")">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-lg-2 control-label" for="registerPassword2">@Messages("password")</label>
+            <div class="col-lg-10">
+              <input class="form-control" id="registerPassword2" name="registerPassword2" type="password" placeholder="@Messages("repassword")">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-lg-10 col-lg-offset-2">
+              <button type="submit" class="btn btn-primary">@Messages("register")</button>
+            </div>
+          </div>
+        </fieldset>
+      }
+      </div>
+    </div>
+  </div>
 }
