@@ -6,6 +6,12 @@
       <div class="well">
       @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
         <fieldset>
+          <input type="hidden" name="loginUrl" value="@if(registerForm.data.get("loginUrl").isDefined) {@registerForm.data.get("loginUrl")} else {@request.uri}" />
+          @if(loginForm.hasErrors) {
+            <p class="alert alert-danger">
+            @loginForm.errors.map { msg => @Messages(msg.message)<br/> }
+            </p>
+          }
           <legend>@Messages("login")</legend>
           <div class="form-group">
             <label class="col-lg-2 control-label" for="loginEmail">@Messages("email")</label>
@@ -32,6 +38,12 @@
       <div class="well">
       @helper.form(routes.UserController.register, 'class -> "form-horizontal") {
         <fieldset>
+          <input type="hidden" name="registerUrl" value="@if(registerForm.data.get("registerUrl").isDefined) {@registerForm.data.get("registerUrl")} else {@request.uri}" />
+          @if(registerForm.hasErrors) {
+            <p class="alert alert-danger">
+            @registerForm.errors.map { msg => @Messages(msg.message)<br/> }
+            </p>
+          }
           <legend>@Messages("register")</legend>
           <div class="form-group">
             <label class="col-lg-2 control-label" for="registerEmail">@Messages("email")</label>
