@@ -1,7 +1,7 @@
 # Routes
-GET        /                     controllers.ApplicationController.index
+GET         /                     controllers.ApplicationController.index
 POST        /                     controllers.UserController.login
 
 # Map static resources from the /public folder to the /assets URL path
-GET        /assets/*file         controllers.Assets.at(path="/public", file: String)
-GET        /webjars/*file        controllers.WebJarAssets.at(file)
+GET         /assets/*file         controllers.Assets.at(path="/public", file: String)
+GET         /webjars/*file        controllers.WebJarAssets.at(file)
