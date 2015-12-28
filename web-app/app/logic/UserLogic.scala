@@ -12,7 +12,7 @@ object UserLogic {
       val user: User = new User
       user.email = email
       user.password = HashHelper.saltedHash(password)
-      user
+      Neo4jProvider.get().userRepository.save(user)
     } else {
       null
     }
