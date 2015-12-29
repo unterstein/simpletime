@@ -1,0 +1,51 @@
+@(projectForm: play.api.data.Form[ProjectController.CaseProject])(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@import com.google.gson.Gson
+
+<div class="well">
+  @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
+    <fieldset>
+      @if(projectForm.hasErrors) {
+        <p class="alert alert-danger">
+        @projectForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
+        </p>
+      }
+      <legend data-bind="value: name"></legend>
+      <div class="form-group">
+        <label class="col-lg-2 control-label" for="loginEmail">@Messages("email")</label>
+        <div class="col-lg-10">
+          <input class="form-control" id="loginEmail" name="loginEmail" type="email" placeholder="@Messages("email")">
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-lg-2 control-label" for="loginPassword">@Messages("password")</label>
+        <div class="col-lg-10">
+          <input class="form-control" id="loginPassword" name="loginPassword" type="password" placeholder="@Messages("password")">
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="col-lg-10 col-lg-offset-2">
+          <button type="submit" class="btn btn-primary">@Messages("login")</button>
+        </div>
+      </div>
+    </fieldset>
+  }
+</div>
+
+@javaScriptInclude = {
+  <script>
+  $(function() {
+    var model = @{Html(new Gson().toJson(projectForm.get))};
+    var viewModel = ko.mapping.fromJS(model);
+
+    viewModel.fullName = ko.computed(function() {
+    return viewModel.firstName() + " " + viewModel.lastName();
+  });
+  ko.applyBindings(viewModel);
+  });
+  </script>
+}
+
+@main(javaScriptInclude) {
+
+
+}

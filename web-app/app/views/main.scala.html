@@ -1,4 +1,4 @@
-@()(content: Html)(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@(javaScriptInclude: Html = Html(""))(content: Html)(implicit request: play.api.mvc.Request[Any], messages: Messages)
 
 <!DOCTYPE html>
 
@@ -19,5 +19,6 @@
     <script src="@routes.WebJarAssets.at(WebJarAssets.locate("bootswatch-flatly", "bootstrap.min.js"))"></script>
     <script src="@routes.WebJarAssets.at(WebJarAssets.locate("knockout", "knockout.js"))"></script>
     <script src="@routes.Assets.at("js/main.js")"></script>
+    @javaScriptInclude
   </body>
 </html>
