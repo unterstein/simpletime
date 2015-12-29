@@ -1,8 +1,16 @@
 # Routes
+
+## root
 GET         /                     controllers.ApplicationController.index
-GET /signin controllers.UserController.index
+
+## sign in, sign out
+GET         /signin               controllers.UserController.index
 POST        /login                controllers.UserController.login
+POST        /logout               controllers.UserController.logout
 POST        /register             controllers.UserController.register
+
+## projects
+GET         /projects             controllers.ProjectController.list
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file         controllers.Assets.at(path="/public", file: String)

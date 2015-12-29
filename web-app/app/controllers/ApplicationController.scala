@@ -9,7 +9,7 @@ class ApplicationController @Inject()(messages: MessagesApi) extends BaseControl
   def index = BaseAction {
     implicit request =>
       if (userInfo(request).isDefined) {
-        Ok("loggedIn")
+        Redirect(routes.ProjectController.list)
       } else {
         Redirect(routes.UserController.index)
       }

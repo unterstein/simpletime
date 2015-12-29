@@ -4,7 +4,9 @@ register=Register
 login=Login
 password=Password
 repassword=Repeat password
+details=Details
 
+# form stuff
 loginEmail=E-Mail
 loginPassword=Password
 

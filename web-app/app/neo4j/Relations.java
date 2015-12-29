@@ -6,4 +6,6 @@ package neo4j;
 public interface Relations {
 
   String TIME_PROJECT = "TIME_PROJECT";
+
+  String USER_PROJECT = "USER_PROJECT";
 }

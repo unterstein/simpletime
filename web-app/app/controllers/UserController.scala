@@ -21,6 +21,11 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
       )
   }
 
+  def logout = BaseAction {
+    implicit request =>
+      Redirect(routes.ApplicationController.index).withNewSession
+  }
+
   def register = BaseAction {
     implicit request =>
       UserController.registerForm.bindFromRequest.fold(

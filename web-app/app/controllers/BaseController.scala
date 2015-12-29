@@ -4,6 +4,7 @@ import com.google.gson.Gson
 import neo4j.models.user.User
 import neo4j.services.Neo4jProvider
 import play.api.i18n.I18nSupport
+import play.api.mvc.Security.AuthenticatedRequest
 import play.api.mvc._
 
 /**
@@ -11,7 +12,7 @@ import play.api.mvc._
  */
 trait BaseController extends Controller with I18nSupport {
 
-  case class BaseRequest(request: Request[AnyContent], user: User)
+  class BaseRequest(request: Request[AnyContent], user: User) extends AuthenticatedRequest[AnyContent, User](user, request)
 
   val gson = new Gson()
 
@@ -22,10 +23,10 @@ trait BaseController extends Controller with I18nSupport {
       f(request)
   }
 
-  def AuthenticatedBaseAction()(f: => BaseRequest => Result) = Security.Authenticated(userInfo, onUnauthorized) {
+  def AuthenticatedBaseAction(f: => BaseRequest => Result) = Security.Authenticated(userInfo, onUnauthorized) {
     user =>
       BaseAction(request => {
-        f(BaseRequest(request, null))
+        f(new BaseRequest(request, null))
       })
   }
 
