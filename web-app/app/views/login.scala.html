@@ -6,7 +6,6 @@
       <div class="well">
       @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
         <fieldset>
-          <input type="hidden" name="loginUrl" value="@if(registerForm.data.get("loginUrl").isDefined) {@registerForm.data.get("loginUrl")} else {@request.uri}" />
           @if(loginForm.hasErrors) {
             <p class="alert alert-danger">
             @loginForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
@@ -38,7 +37,6 @@
       <div class="well">
       @helper.form(routes.UserController.register, 'class -> "form-horizontal") {
         <fieldset>
-          <input type="hidden" name="registerUrl" value="@if(registerForm.data.get("registerUrl").isDefined) {@registerForm.data.get("registerUrl")} else {@request.uri}" />
           @if(registerForm.hasErrors) {
             <p class="alert alert-danger">
             @registerForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }

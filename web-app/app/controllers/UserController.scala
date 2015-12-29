@@ -16,7 +16,7 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
         formWithErrors => Ok(views.html.login(formWithErrors, UserController.registerForm)),
         value => {
           val user = Neo4jProvider.get().userRepository.findByEmail(value.loginEmail)
-          Redirect(value.loginUrl).withSession(USER_HASH -> user.hash)
+          Redirect(routes.ApplicationController.index).withSession(USER_HASH -> user.hash)
         }
       )
   }
@@ -27,7 +27,7 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
         formWithErrors => Ok(views.html.login(UserController.loginForm, formWithErrors)),
         value => {
           val user = UserLogic.createUser(value.registerEmail, value.registerPassword)
-          Redirect(value.registerUrl).withSession(USER_HASH -> user.hash)
+          Redirect(routes.ApplicationController.index).withSession(USER_HASH -> user.hash)
         }
       )
   }
@@ -42,11 +42,10 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
 
 object UserController {
 
-  case class Register(registerUrl: String, registerEmail: String, registerPassword: String, registerPassword2: String)
+  case class Register(registerEmail: String, registerPassword: String, registerPassword2: String)
 
   val registerForm: Form[Register] = Form(
     mapping(
-      "registerUrl" -> text,
       "registerEmail" -> email,
       "registerPassword" -> nonEmptyText(minLength = 5),
       "registerPassword2" -> nonEmptyText(minLength = 5)
@@ -56,11 +55,10 @@ object UserController {
       Neo4jProvider.get().userRepository.findByEmail(register.registerEmail) == null)
   )
 
-  case class Login(loginUrl: String, loginEmail: String, loginPassword: String)
+  case class Login(loginEmail: String, loginPassword: String)
 
   val loginForm: Form[Login] = Form(
     mapping(
-      "loginUrl" -> text,
       "loginEmail" -> email,
       "loginPassword" -> nonEmptyText
     )(Login.apply)(Login.unapply)
