@@ -17,7 +17,7 @@ trait BaseController extends Controller with I18nSupport {
 
   val USER_HASH = "userHash"
 
-  def BaseAction(f: Request[AnyContent] => Result): Action[AnyContent] = Action {
+  def BaseAction(f: Request[AnyContent] => Result): Action[AnyContent] = Neo4jTransactionAction {
     implicit request =>
       f(request)
   }
