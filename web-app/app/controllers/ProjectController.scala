@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject.Inject
 
-import com.google.gson.Gson
 import controllers.ProjectController.CaseProject
 import neo4j.models.project.ProjectColumnType
 import neo4j.services.Neo4jProvider
@@ -22,13 +21,13 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def create = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectEdit(true, ProjectController.initialProjectForm))
+      Ok(views.html.projectEdit(true, ProjectController.initialProjectForm, ProjectController.initialColumn))
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
 
-      Ok(views.html.projectEdit(false, ProjectController.projectForm.fill(CaseProject(-1L, "TODO", List()))))
+      Ok(views.html.projectEdit(false, ProjectController.projectForm.fill(CaseProject(-1L, "TODO", List())), ProjectController.initialColumn))
   }
 
   override def messagesApi: MessagesApi = messages
@@ -53,6 +52,8 @@ object ProjectController {
       )(CaseColumn.apply)(CaseColumn.unapply))
     )(CaseProject.apply)(CaseProject.unapply)
   )
+
+  def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn(-1L, "", ProjectColumnType.STRING.name())
 
   def initialProjectForm()(implicit messages: play.api.i18n.Messages): Form[CaseProject] = {
     val columns = List(

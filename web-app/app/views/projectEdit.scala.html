@@ -1,4 +1,4 @@
-@(create: Boolean ,projectForm: play.api.data.Form[ProjectController.CaseProject])(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@(create: Boolean, projectForm: play.api.data.Form[ProjectController.CaseProject], column: controllers.ProjectController.CaseColumn)(implicit request: play.api.mvc.Request[Any], messages: Messages)
 
 @import logic.JsonHelper
 
@@ -34,6 +34,7 @@
             </tr>
           </tbody>
         </table>
+        <a class="btn btn-default pull-right clearfix" id="newColumn" href="#">@Messages("column.new")</a>
       </div>
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
@@ -48,9 +49,18 @@
   <script>
   $(function() {
     var model = @{Html(JsonHelper.toJson(projectForm.get))};
+    var column = @{Html(JsonHelper.toJson(column))};
     var viewModel = ko.mapping.fromJS(model);
 
     ko.applyBindings(viewModel);
+    $("#newColumn" ).click(function() {
+      viewModel.columns.push(column);
+    });
+
+    function cloneObservable(observableObject) {
+      return ko.mapping.fromJS(ko.toJS(observableObject));
+    }
+
   });
   </script>
 }

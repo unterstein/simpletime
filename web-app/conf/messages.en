@@ -15,6 +15,7 @@ project.new=New project
 project.default=Example project
 column.name=Column name
 column.type=Column type
+column.new=New column
 
 # form stuff
 loginEmail=E-Mail
