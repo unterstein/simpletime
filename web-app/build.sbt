@@ -22,7 +22,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootswatch-flatly" % "3.3.5+4",
   "org.webjars" % "jquery" % "2.1.4",
   "org.webjars" % "knockout" % "3.4.0",
-  "org.webjars.bower" % "knockout-mapping" % "2.4.1"
+  "org.webjars.bower" % "knockout-mapping" % "2.4.1",
+  "org.webjars" % "font-awesome" % "4.5.0"
 )
 
 resolvers += "scalaz-bintray" at "http://dl.bintray.com/scalaz/releases"
