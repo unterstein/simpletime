@@ -4,6 +4,8 @@ import javax.inject.Inject
 
 import controllers.ProjectController.CaseProject
 import neo4j.services.Neo4jProvider
+import play.api.data.Form
+import play.api.data.Forms._
 import play.api.i18n.MessagesApi
 
 import scala.collection.JavaConversions._
@@ -42,6 +44,6 @@ object ProjectController {
         "name" -> nonEmptyText,
         "columnType" -> nonEmptyText
       )(CaseColumn.apply)(CaseColumn.unapply))
-    )(CaseProject.apply)(CaseProject.unapply)
-  )
+      )(CaseProject.apply)(CaseProject.unapply)
+    )
 }
