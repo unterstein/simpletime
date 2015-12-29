@@ -13,8 +13,6 @@ import play.api.i18n.{Messages, MessagesApi}
 import scala.collection.JavaConversions._
 import scala.collection.JavaConverters._
 
-import java.util
-
 class ProjectController @Inject()(messages: MessagesApi) extends BaseController {
 
   def list = AuthenticatedBaseAction {
@@ -38,7 +36,9 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
 object ProjectController {
 
-  case class CaseColumn(columnId: Long, columnName: String, columnType: String)
+  case class CaseColumn(columnId: Long, columnName: String, columnType: String) {
+    val columnTypes = ProjectColumnType.values().map { e => e.name}.toList.asJava
+  }
 
   case class CaseProject(id: Long, name: String, columns: List[CaseColumn])
 
