@@ -1,5 +1,6 @@
 @(create: Boolean ,projectForm: play.api.data.Form[ProjectController.CaseProject])(implicit request: play.api.mvc.Request[Any], messages: Messages)
-@import com.google.gson.Gson
+
+@import logic.JsonHelper
 
 <div class="well">
   @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
@@ -17,6 +18,22 @@
         </div>
       </div>
       <div class="form-group">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr>
+              <th>@Messages("column.name")</th>
+              <th>@Messages("column.type")</th>
+            </tr>
+          </thead>
+          <tbody data-bind="foreach: columns">
+            <tr>
+              <td data-bind="text: columnName"></td>
+              <td data-bind="text: columnType"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
           <button type="submit" class="btn btn-primary">@Messages(if(create) "create" else "edit")</button>
         </div>
@@ -28,7 +45,7 @@
 @javaScriptInclude = {
   <script>
   $(function() {
-    var model = @{Html(new Gson().toJson(projectForm.get))};
+    var model = @{Html(JsonHelper.toJson(projectForm.get))};
     var viewModel = ko.mapping.fromJS(model);
 
     ko.applyBindings(viewModel);

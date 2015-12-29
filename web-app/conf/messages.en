@@ -6,10 +6,15 @@ password=Password
 repassword=Repeat password
 details=Details
 project=Project
-project.new=New project
 name=Name
 create=Create
 edit=Edit
+
+# projects
+project.new=New project
+project.default=Example project
+column.name=Column name
+column.type=Column type
 
 # form stuff
 loginEmail=E-Mail
