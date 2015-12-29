@@ -19,13 +19,13 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def create = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectEdit(ProjectController.projectForm.fill(CaseProject("TODO", List()))))
+      Ok(views.html.projectEdit(true, ProjectController.projectForm.fill(CaseProject("TODO", List()))))
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
 
-      Ok(views.html.projectEdit(ProjectController.projectForm.fill(CaseProject("TODO", List()))))
+      Ok(views.html.projectEdit(false, ProjectController.projectForm.fill(CaseProject("TODO", List()))))
   }
 
   override def messagesApi: MessagesApi = messages

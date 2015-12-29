@@ -1,4 +1,4 @@
-@(projectForm: play.api.data.Form[ProjectController.CaseProject])(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@(create: Boolean ,projectForm: play.api.data.Form[ProjectController.CaseProject])(implicit request: play.api.mvc.Request[Any], messages: Messages)
 @import com.google.gson.Gson
 
 <div class="well">
@@ -9,22 +9,16 @@
         @projectForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
         </p>
       }
-      <legend data-bind="value: name"></legend>
+      <legend>@Messages("project"): <span data-bind="text: name"> </span></legend>
       <div class="form-group">
-        <label class="col-lg-2 control-label" for="loginEmail">@Messages("email")</label>
+        <label class="col-lg-2 control-label" for="name">@Messages("name")</label>
         <div class="col-lg-10">
-          <input class="form-control" id="loginEmail" name="loginEmail" type="email" placeholder="@Messages("email")">
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="col-lg-2 control-label" for="loginPassword">@Messages("password")</label>
-        <div class="col-lg-10">
-          <input class="form-control" id="loginPassword" name="loginPassword" type="password" placeholder="@Messages("password")">
+          <input class="form-control" id="name" name="name" type="text" placeholder="@Messages("name")" data-bind="value: name">
         </div>
       </div>
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-          <button type="submit" class="btn btn-primary">@Messages("login")</button>
+          <button type="submit" class="btn btn-primary">@Messages(if(create) "create" else "edit")</button>
         </div>
       </div>
     </fieldset>
@@ -37,10 +31,7 @@
     var model = @{Html(new Gson().toJson(projectForm.get))};
     var viewModel = ko.mapping.fromJS(model);
 
-    viewModel.fullName = ko.computed(function() {
-    return viewModel.firstName() + " " + viewModel.lastName();
-  });
-  ko.applyBindings(viewModel);
+    ko.applyBindings(viewModel);
   });
   </script>
 }

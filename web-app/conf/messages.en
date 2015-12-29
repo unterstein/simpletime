@@ -5,7 +5,11 @@ login=Login
 password=Password
 repassword=Repeat password
 details=Details
+project=Project
 project.new=New project
+name=Name
+create=Create
+edit=Edit
 
 # form stuff
 loginEmail=E-Mail
