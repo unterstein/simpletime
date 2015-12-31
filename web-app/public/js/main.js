@@ -1,21 +1,24 @@
 $(function () {
   var datamodel = $("#datamodel");
-  var model = datamodel.data("model");
-  var column = datamodel.data("column");
-  var viewModel = ko.mapping.fromJS(model);
 
-  ko.applyBindings(viewModel);
+  if (datamodel.data("mode") == "project") {
+    var model = datamodel.data("model");
+    var column = datamodel.data("column");
+    var viewModel = ko.mapping.fromJS(model);
 
-  $("#newColumn").click(function () {
-    viewModel.columns.push(cloneObservable(column));
-    return false;
-  });
+    ko.applyBindings(viewModel);
 
-  $(document).on("click", ".deleteColumn", function () {
-    var removeItem = $(".deleteColumn").index(this);
-    console.log(removeItem);
-    return false;
-  });
+    $("#newColumn").click(function () {
+      viewModel.columns.push(cloneObservable(column));
+      return false;
+    });
+
+    $(document).on("click", ".deleteColumn", function () {
+      var removeItem = $(".deleteColumn").index(this);
+      console.log(removeItem);
+      return false;
+    });
+  }
 
   function cloneObservable(observableObject) {
     return ko.mapping.fromJS(ko.toJS(observableObject));
