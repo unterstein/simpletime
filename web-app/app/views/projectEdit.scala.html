@@ -2,7 +2,8 @@
 
 @import logic.JsonHelper
 
-<div class="well">
+@main() {
+<div id="datamodel" class="well" data-model='@{Html(JsonHelper.toJson(projectForm.get))}' data-column='@{Html(JsonHelper.toJson(column))}'>
   @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
     <fieldset>
       @if(projectForm.hasErrors) {
@@ -48,36 +49,5 @@
     </fieldset>
   }
 </div>
-
-@javaScriptInclude = {
-  <script>
-  $(function() {
-    var model = @{Html(JsonHelper.toJson(projectForm.get))};
-    var column = @{Html(JsonHelper.toJson(column))};
-    var viewModel = ko.mapping.fromJS(model);
-
-    ko.applyBindings(viewModel);
-
-    $("#newColumn").click(function() {
-      viewModel.columns.push(cloneObservable(column));
-      return false;
-    });
-
-    $(document).on("click", ".deleteColumn", function () {
-      var removeItem = $(".deleteColumn").index(this);
-      console.log(removeItem);
-      return false;
-    });
-
-    function cloneObservable(observableObject) {
-      return ko.mapping.fromJS(ko.toJS(observableObject));
-    }
-
-  });
-  </script>
-}
-
-@main(javaScriptInclude) {
-
 
 }
