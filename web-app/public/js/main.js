@@ -1,7 +1,7 @@
 $(function () {
   var datamodel = $("#datamodel");
 
-  if (datamodel.data("mode") == "project") {
+  if (datamodel.data("page") == "project") {
     var model = datamodel.data("model");
     var column = datamodel.data("column");
     var viewModel = ko.mapping.fromJS(model);
