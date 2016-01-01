@@ -3,6 +3,7 @@
 @import logic.JsonHelper
 
 @main() {
+  @*TODO replace projectForm.get*@
 <div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(projectForm.get))}' data-column='@{Html(JsonHelper.toJson(column))}'>
   @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
     <fieldset>
