@@ -23,6 +23,7 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "2.1.4",
   "org.webjars" % "knockout" % "3.4.0",
   "org.webjars.bower" % "knockout-mapping" % "2.4.1",
+  "org.webjars.bower" % "knockout-validation" % "2.0.3" exclude("org.webjars.bower", "knockout"),
   "org.webjars" % "font-awesome" % "4.5.0"
 )
 
