@@ -3,7 +3,7 @@ package controllers
 import javax.inject.Inject
 
 import controllers.ProjectController.CaseProject
-import neo4j.models.project.ProjectColumnType
+import neo4j.models.project.{ProjectColumn, Project, ProjectColumnType}
 import neo4j.services.Neo4jProvider
 import play.api.data.Form
 import play.api.data.Forms._
@@ -26,7 +26,18 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         value => {
           // TODO remove "new" hack
           if ("new".equals("hash")) {
-            // create
+            val project = new Project
+            project.name = value.name
+            project.id = value.id
+            project.user = request.user
+            project.columns = value.columns.map {
+              column =>
+                val projectColumn = new ProjectColumn
+                projectColumn.name = column.columnName
+                projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
+                projectColumn
+            }.toList
+            Neo4jProvider.get().projectRepository.save(project)
           } else {
             // edit
           }
@@ -42,7 +53,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
-
+      // TODO load from database
       Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(CaseProject(-1L, "TODO", List())), ProjectController.initialColumn))
   }
 
