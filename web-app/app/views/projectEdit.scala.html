@@ -45,7 +45,7 @@
       </div>
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-          <button type="submit" class="btn btn-primary pull-right">@Messages(if(StringUtils.isBlank(hash)) "create" else "edit")</button>
+          <button type="submit" class="btn btn-primary pull-right">@Messages(if("new".equals(hash)) "create" else "edit")</button>
         </div>
       </div>
     </fieldset>
