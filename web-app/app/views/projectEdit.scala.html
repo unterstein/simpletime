@@ -1,11 +1,12 @@
-@(create: Boolean, projectForm: play.api.data.Form[ProjectController.CaseProject], column: controllers.ProjectController.CaseColumn)(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@(hash: String, projectForm: play.api.data.Form[ProjectController.CaseProject], column: controllers.ProjectController.CaseColumn)(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@import org.apache.commons.lang3.StringUtils
 
 @import logic.JsonHelper
 
 @main() {
   @*TODO replace projectForm.get*@
 <div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(projectForm.get))}' data-column='@{Html(JsonHelper.toJson(column))}'>
-  @helper.form(routes.UserController.login, 'class -> "form-horizontal") {
+  @helper.form(routes.ProjectController.post(hash), 'class -> "form-horizontal") {
     <fieldset>
       @if(projectForm.hasErrors) {
         <p class="alert alert-danger">
@@ -44,7 +45,7 @@
       </div>
       <div class="form-group">
         <div class="col-lg-10 col-lg-offset-2">
-          <button type="submit" class="btn btn-primary pull-right">@Messages(if(create) "create" else "edit")</button>
+          <button type="submit" class="btn btn-primary pull-right">@Messages(if(StringUtils.isBlank(hash)) "create" else "edit")</button>
         </div>
       </div>
     </fieldset>

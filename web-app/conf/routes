@@ -13,6 +13,7 @@ POST        /register              controllers.UserController.register
 GET         /projects              controllers.ProjectController.list
 GET         /projects/new          controllers.ProjectController.create
 GET         /projects/:hash        controllers.ProjectController.edit(hash: String)
+POST        /projects/:hash        controllers.ProjectController.post(hash: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file          controllers.Assets.at(path="/public", file: String)

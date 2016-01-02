@@ -19,15 +19,31 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
       Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUser(request.user).toList))
   }
 
+  def post(hash: String) = AuthenticatedBaseAction {
+    implicit request =>
+      ProjectController.projectForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn)),
+        value => {
+          // TODO remove "new" hack
+          if("new".equals("hash")) {
+            // create
+          } else {
+            // edit
+          }
+          Ok("")
+        }
+      )
+  }
+
   def create = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectEdit(true, ProjectController.initialProjectForm, ProjectController.initialColumn))
+      Ok(views.html.projectEdit("new", ProjectController.initialProjectForm, ProjectController.initialColumn))
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
 
-      Ok(views.html.projectEdit(false, ProjectController.projectForm.fill(CaseProject(-1L, "TODO", List())), ProjectController.initialColumn))
+      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(CaseProject(-1L, "TODO", List())), ProjectController.initialColumn))
   }
 
   override def messagesApi: MessagesApi = messages
