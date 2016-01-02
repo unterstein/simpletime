@@ -25,7 +25,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn)),
         value => {
           // TODO remove "new" hack
-          if("new".equals("hash")) {
+          if ("new".equals("hash")) {
             // create
           } else {
             // edit
