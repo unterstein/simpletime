@@ -21,6 +21,7 @@ public class Project extends HashedEntity {
 
   public String name;
 
+  // FIXME: add magic annotation for embedded entity
   public List<ProjectColumn> columns;
 
   @RelatedTo(type = Relations.USER_PROJECT, direction = Direction.INCOMING)
