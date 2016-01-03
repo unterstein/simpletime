@@ -2,7 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
-import controllers.ProjectController.CaseProject
+import controllers.ProjectController.{CaseColumn, CaseProject}
 import logic.HashHelper
 import neo4j.models.project.{ProjectColumn, Project, ProjectColumnType}
 import neo4j.services.Neo4jProvider
@@ -55,8 +55,17 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
-      // TODO load from database
-      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(CaseProject("TODO", List())), ProjectController.initialColumn))
+      val project = Neo4jProvider.get().projectRepository.findByHash(hash)
+      val columns = if (project.columns != null) {
+        project.columns.map {
+          column =>
+            CaseColumn(Option(column.key), column.name, column.`type`.name()) // TODO column.properties
+        }.toList
+      } else {
+        List()
+      }
+      val caseProject = CaseProject(project.name, columns)
+      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), ProjectController.initialColumn))
   }
 
   override def messagesApi: MessagesApi = messages
@@ -64,7 +73,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
 object ProjectController {
 
-  case class CaseColumn(columnId: Option[Long], columnName: String, columnType: String) {
+  case class CaseColumn(columnKey: Option[String], columnName: String, columnType: String) {
     val columnTypes = ProjectColumnType.values().map { e => e.name}.toList.asJava
   }
 
@@ -74,7 +83,7 @@ object ProjectController {
     mapping(
       "name" -> nonEmptyText,
       "columns" -> list(mapping(
-        "columnId" -> optional(longNumber),
+        "columnKey" -> optional(nonEmptyText),
         "columnName" -> nonEmptyText,
         "columnType" -> nonEmptyText
       )(CaseColumn.apply)(CaseColumn.unapply))
