@@ -31,13 +31,13 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
             project.name = value.name
             project.user = request.user
             project.hash = HashHelper.uuid()
-            project.columns = value.columns.map {
+            project.setColumns(value.columns.map {
               column =>
                 val projectColumn = new ProjectColumn
                 projectColumn.name = column.columnName
                 projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
                 projectColumn
-            }.toList
+            }.toList)
             Neo4jProvider.get().projectRepository.save(project)
             Redirect(routes.ProjectController.edit(project.hash))
           } else {
@@ -57,7 +57,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
     implicit request =>
       val project = Neo4jProvider.get().projectRepository.findByHash(hash)
       val columns = if (project.columns != null) {
-        project.columns.map {
+        project.getColumns.map {
           column =>
             CaseColumn(Option(column.key), column.name, column.`type`.name()) // TODO column.properties
         }.toList
