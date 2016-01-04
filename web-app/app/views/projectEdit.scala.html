@@ -24,6 +24,7 @@
         <table class="table table-bordered table-striped">
           <thead>
             <tr>
+              <th>@Messages("column.key")</th>
               <th>@Messages("column.name")</th>
               <th>@Messages("column.type")</th>
               <th></th>
@@ -31,6 +32,7 @@
           </thead>
           <tbody data-bind="foreach: columns">
             <tr class="columns">
+              <td><input class="form-control columnKey" data-bind="value: columnKey" ></td>
               <td><input class="form-control columnName" data-bind="value: columnName" ></td>
               <td>
                 <select class="form-control columnType" data-bind="options: columnTypes, value: columnType"></select>

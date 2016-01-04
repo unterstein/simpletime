@@ -32,20 +32,28 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
             project.name = value.name
             project.user = request.user
             project.hash = HashHelper.uuid()
-            project.setColumns(value.columns.map {
-              column =>
-                val projectColumn = new ProjectColumn
-                projectColumn.name = column.columnName
-                projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
-                projectColumn
-            }.toList)
+            project.setColumns(createColumns(value))
             Neo4jProvider.get().projectRepository.save(project)
             Redirect(routes.ProjectController.edit(project.hash))
           } else {
+            val dbProject = Neo4jProvider.get().projectRepository.findByHash(hash)
+            dbProject.name = value.name
+            dbProject.setColumns(createColumns(value))
             Redirect(routes.ProjectController.edit(hash))
           }
         }
       )
+  }
+
+  def createColumns(value: CaseProject): List[ProjectColumn] = {
+    value.columns.map {
+      column =>
+        val projectColumn = new ProjectColumn
+        projectColumn.name = column.columnName
+        projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
+        projectColumn.key = column.columnKey
+        projectColumn
+    }.toList
   }
 
   def create = AuthenticatedBaseAction {
@@ -60,7 +68,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
       val columns = if (project.columns != null) {
         project.getColumns.map {
           column =>
-            CaseColumn(Option(column.key), column.name, column.`type`.name()) // TODO column.properties
+            CaseColumn(column.key, column.name, column.`type`.name()) // TODO column.properties
         }.toList
       } else {
         List()
@@ -74,7 +82,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
 object ProjectController {
 
-  case class CaseColumn(columnKey: Option[String], columnName: String, columnType: String) {
+  case class CaseColumn(columnKey: String, columnName: String, columnType: String) {
     val columnTypes = ProjectColumnType.values().map { e => e.name}.toList.asJava
   }
 
@@ -84,7 +92,7 @@ object ProjectController {
     mapping(
       "name" -> nonEmptyText,
       "columns" -> list(mapping(
-        "columnKey" -> optional(nonEmptyText),
+        "columnKey" -> nonEmptyText,
         "columnName" -> nonEmptyText,
         "columnType" -> nonEmptyText
       )(CaseColumn.apply)(CaseColumn.unapply))

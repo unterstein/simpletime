@@ -14,6 +14,7 @@ back=Back
 # projects
 project.new=New project
 project.default=Example project
+column.key=Column key (do not edit after creation!)
 column.name=Column name
 column.type=Column type
 column.new=New column
