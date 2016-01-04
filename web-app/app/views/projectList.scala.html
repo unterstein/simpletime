@@ -4,15 +4,13 @@
 
   @projects.map { project =>
     <div class="well">
+      <h2>@project.name</h2>
       <div class="row">
-        <div class="col-xs-2">
-          <h2>@project.name</h2
-        </div>
-        <div class="col-xs-8">
-          @project.getColumns.mkString(",")
+        <div class="col-xs-10">
+          @project.getColumns.map(column => column.name).mkString(",")
         </div>
         <div class="col-xs-2">
-          <a class="btn btn-primary" href="#">@Messages("details")</a>
+          <a class="btn btn-primary" href="@routes.ProjectController.edit(project.hash)">@Messages("details")</a>
         </div>
       </div>
     </div>
