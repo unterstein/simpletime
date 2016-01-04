@@ -9,6 +9,7 @@ project=Project
 name=Name
 create=Create
 edit=Edit
+back=Back
 
 # projects
 project.new=New project
