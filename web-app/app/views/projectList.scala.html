@@ -10,7 +10,8 @@
           @project.getColumns.map(column => column.name).mkString(",")
         </div>
         <div class="col-xs-2">
-          <a class="btn btn-primary" href="@routes.ProjectController.edit(project.hash)">@Messages("details")</a>
+          <a class="btn btn-primary" href="@routes.ProjectController.edit(project.hash)">@Messages("edit")</a>
+          <a class="btn btn-info" href="@routes.TimeEntryController.list(project.hash)">@Messages("details")</a>
         </div>
       </div>
     </div>
