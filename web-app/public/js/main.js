@@ -23,13 +23,12 @@ $(function () {
     updateNames();
 
     function updateNames() {
-      var columnNames = $(".columnName");
-      columnNames.each(function () {
-        $(this).attr("name", "columns[" + columnNames.index(this) + "].columnName");
-      });
-      var columnTypes = $(".columnType");
-      columnTypes.each(function () {
-        $(this).attr("name", "columns[" + columnTypes.index(this) + "].columnType");
+      var columns= $(".columns");
+      columns.each(function () {
+        var index = columns.index(this)
+        $(this).find(".columnName").attr("name", "columns[" + index + "].columnName");
+        $(this).find(".columnType").attr("name", "columns[" + index + "].columnType");
+        $(this).find(".columnKey").attr("name", "columns[" + index + "].columnKey");
       });
     }
   }
