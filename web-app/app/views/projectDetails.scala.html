@@ -1,0 +1,20 @@
+@(hash: String, timeEntryForm: play.api.data.Form[TimeEntryController.CaseEntries])(implicit request: play.api.mvc.Request[Any], messages: Messages)
+
+@import logic.JsonHelper
+
+@main() {
+  @*TODO replace projectForm.get*@
+<div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(timeEntryForm.get))}'>
+  @helper.form(routes.ProjectController.post(hash), 'class -> "form-horizontal") {
+    <fieldset>
+      @if(timeEntryForm.hasErrors) {
+        <p class="alert alert-danger">
+        @timeEntryForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
+        </p>
+      }
+      <legend>@Messages("project"): <span data-bind="text: name"> </span></legend>
+    </fieldset>
+  }
+</div>
+
+}
