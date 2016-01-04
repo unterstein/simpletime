@@ -26,7 +26,7 @@ trait BaseController extends Controller with I18nSupport {
   def AuthenticatedBaseAction(f: => BaseRequest => Result) = Security.Authenticated(userInfo, onUnauthorized) {
     user =>
       BaseAction(request => {
-        f(new BaseRequest(request, null))
+        f(new BaseRequest(request, user))
       })
   }
 
