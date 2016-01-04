@@ -11,16 +11,16 @@ import scala.collection.JavaConverters._
  */
 object JsonHelper {
 
-  val gson = new GsonBuilder().registerTypeAdapter(classOf[List[AnyRef]], new ListSerializer()).create()
+  val gson = new GsonBuilder().registerTypeAdapter(classOf[List[Any]], new ListSerializer()).create()
 
 
   def toJson(obj: Object): String = gson.toJson(obj)
 
   def fromJson[T](json: String, clazz: Class[T]): T = gson.fromJson(json, clazz)
 
-  class ListSerializer extends JsonSerializer[List[AnyRef]] {
+  class ListSerializer extends JsonSerializer[List[Any]] {
 
-    override def serialize(src: List[AnyRef], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
+    override def serialize(src: List[Any], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
       gson.toJsonTree(src.asJava)
     }
   }
