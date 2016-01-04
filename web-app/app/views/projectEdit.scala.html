@@ -31,9 +31,9 @@
           </thead>
           <tbody data-bind="foreach: columns">
             <tr>
-              <td><input class="form-control" data-bind="value: columnName"></td>
+              <td><input class="form-control columnName" data-bind="value: columnName" ></td>
               <td>
-                <select class="form-control" data-bind="options: columnTypes, value: columnType"></select>
+                <select class="form-control columnType" data-bind="options: columnTypes, value: columnType"></select>
               </td>
               <td>
                 <a href="#" class="btn btn-default deleteColumn"><i class="fa fa-trash"></i></a>
