@@ -37,3 +37,7 @@ $(function () {
     return ko.mapping.fromJS(ko.toJS(observableObject));
   }
 });
+
+window.columnTypes = function() {
+  return $("#datamodel").data("types");
+};

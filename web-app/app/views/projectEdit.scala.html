@@ -1,10 +1,10 @@
-@(hash: String, projectForm: play.api.data.Form[ProjectController.CaseProject], column: controllers.ProjectController.CaseColumn)(implicit request: play.api.mvc.Request[Any], messages: Messages)
+@(hash: String, projectForm: play.api.data.Form[ProjectController.CaseProject], column: controllers.ProjectController.CaseColumn, columnTypes: String)(implicit request: play.api.mvc.Request[Any], messages: Messages)
 
 @import logic.JsonHelper
 
 @main() {
   @*TODO replace projectForm.get*@
-<div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(projectForm.get))}' data-column='@{Html(JsonHelper.toJson(column))}'>
+<div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(projectForm.get))}' data-column='@{Html(JsonHelper.toJson(column))}' data-types='@{Html(columnTypes)}'>
   @helper.form(routes.ProjectController.post(hash), 'class -> "form-horizontal") {
     <fieldset>
       @if(projectForm.hasErrors) {
@@ -34,7 +34,7 @@
               <td><input class="form-control columnKey" data-bind="value: columnKey" ></td>
               <td><input class="form-control columnName" data-bind="value: columnName" ></td>
               <td>
-                <select class="form-control columnType" data-bind="options: columnTypes, value: columnType"></select>
+                <select class="form-control columnType" data-bind="options: columnTypes(), value: columnType"></select>
               </td>
               <td>
                 <a href="#" class="btn btn-default deleteColumn"><i class="fa fa-trash"></i></a>

@@ -24,7 +24,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
     implicit request =>
       // TODO do authorization check
       ProjectController.projectForm.bindFromRequest.fold(
-        formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn)),
+        formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn, ProjectController.columnTypes)),
         value => {
           // TODO remove "new" hack
           if ("new".equals(hash)) {
@@ -63,7 +63,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def create = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectEdit("new", ProjectController.initialProjectForm, ProjectController.initialColumn))
+      Ok(views.html.projectEdit("new", ProjectController.initialProjectForm, ProjectController.initialColumn, ProjectController.columnTypes))
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
@@ -79,7 +79,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         List()
       }
       val caseProject = CaseProject(project.name, columns)
-      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), ProjectController.initialColumn))
+      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), ProjectController.initialColumn, ProjectController.columnTypes))
   }
 
   override def messagesApi: MessagesApi = messages
@@ -87,9 +87,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
 object ProjectController {
 
-  case class CaseColumn(columnKey: String, columnName: String, columnType: String) {
-    val columnTypes = ProjectColumnType.values().map { e => e.name}.toList.asJava
-  }
+  case class CaseColumn(columnKey: String, columnName: String, columnType: String)
 
   case class CaseProject(name: String, columns: List[CaseColumn])
 
@@ -113,4 +111,6 @@ object ProjectController {
     )
     projectForm.fill(CaseProject(Messages("project.default"), columns))
   }
+
+  def columnTypes: String = "[\"" + ProjectColumnType.values().map { e => e.name}.mkString("\",\"") + "\"]"
 }
