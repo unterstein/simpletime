@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface ProjectRepository extends GraphRepository<Project> {
 
-  Project findByHash(String hash);
+  Project findByHashAndUser(String hash, User user);
 
-  List<Project> findByUser(User user);
+  List<Project> findByUserAndActive(User user, boolean active);
 }

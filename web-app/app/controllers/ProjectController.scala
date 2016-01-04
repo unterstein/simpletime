@@ -17,12 +17,11 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def list = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUser(request.user).filter(_.active).toList))
+      Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUserAndActive(request.user, true).toList))
   }
 
   def post(hash: String) = AuthenticatedBaseAction {
     implicit request =>
-      // TODO do authorization/active check
       ProjectController.projectForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn, ProjectController.columnTypes)),
         value => {
@@ -36,7 +35,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
             Neo4jProvider.get().projectRepository.save(project)
             Redirect(routes.ProjectController.edit(project.hash))
           } else {
-            val dbProject = Neo4jProvider.get().projectRepository.findByHash(hash)
+            val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
             dbProject.name = value.name
             dbProject.setColumns(createColumns(value))
             Redirect(routes.ProjectController.edit(hash))
@@ -67,18 +66,16 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
   }
 
   def delete(hash: String) = AuthenticatedBaseAction {
-    // TODO do authorization/active check
     implicit request =>
-      val project = Neo4jProvider.get().projectRepository.findByHash(hash)
+      val project = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
       project.active = false
       Neo4jProvider.get().projectRepository.save(project)
       Redirect(routes.ProjectController.list())
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
-    // TODO do authorization/active check
     implicit request =>
-      val project = Neo4jProvider.get().projectRepository.findByHash(hash)
+      val project = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
       val columns = if (project.columns != null) {
         project.getColumns.map {
           column =>
