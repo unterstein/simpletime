@@ -46,14 +46,18 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
   }
 
   def createColumns(value: CaseProject): List[ProjectColumn] = {
-    value.columns.map {
-      column =>
-        val projectColumn = new ProjectColumn
-        projectColumn.name = column.columnName
-        projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
-        projectColumn.key = column.columnKey
-        projectColumn
-    }.toList
+    if (value.columns != null) {
+      value.columns.map {
+        column =>
+          val projectColumn = new ProjectColumn
+          projectColumn.name = column.columnName
+          projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
+          projectColumn.key = column.columnKey
+          projectColumn
+      }.toList
+    } else {
+      List()
+    }
   }
 
   def create = AuthenticatedBaseAction {
