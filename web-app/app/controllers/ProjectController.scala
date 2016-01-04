@@ -53,6 +53,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
           projectColumn.name = column.columnName
           projectColumn.`type` = ProjectColumnType.valueOf(column.columnType)
           projectColumn.key = column.columnKey
+          // TODO column.properties
           projectColumn
       }.toList
     } else {
