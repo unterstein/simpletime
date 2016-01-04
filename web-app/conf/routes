@@ -12,6 +12,7 @@ POST        /register                      controllers.UserController.register
 ## projects
 GET         /projects                      controllers.ProjectController.list
 GET         /projects/new                  controllers.ProjectController.create
+GET         /projects/:hash/delete         controllers.ProjectController.delete(hash: String)
 GET         /projects/:hash                controllers.ProjectController.edit(hash: String)
 POST        /projects/:hash                controllers.ProjectController.post(hash: String)
 

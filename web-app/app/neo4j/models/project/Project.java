@@ -27,6 +27,8 @@ public class Project extends HashedEntity {
 
   public String columns;
 
+  public boolean active = true;
+
   @RelatedTo(type = Relations.USER_PROJECT, direction = Direction.INCOMING)
   public User user;
 

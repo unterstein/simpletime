@@ -17,12 +17,12 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def list = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUser(request.user).toList))
+      Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUser(request.user).filter(_.active).toList))
   }
 
   def post(hash: String) = AuthenticatedBaseAction {
     implicit request =>
-      // TODO do authorization check
+      // TODO do authorization/active check
       ProjectController.projectForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn, ProjectController.columnTypes)),
         value => {
@@ -66,8 +66,17 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
       Ok(views.html.projectEdit("new", ProjectController.initialProjectForm, ProjectController.initialColumn, ProjectController.columnTypes))
   }
 
+  def delete(hash: String) = AuthenticatedBaseAction {
+    // TODO do authorization/active check
+    implicit request =>
+      val project = Neo4jProvider.get().projectRepository.findByHash(hash)
+      project.active = false
+      Neo4jProvider.get().projectRepository.save(project)
+      Redirect(routes.ProjectController.list())
+  }
+
   def edit(hash: String) = AuthenticatedBaseAction {
-    // TODO do authorization check
+    // TODO do authorization/active check
     implicit request =>
       val project = Neo4jProvider.get().projectRepository.findByHash(hash)
       val columns = if (project.columns != null) {
