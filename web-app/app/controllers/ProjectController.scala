@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import controllers.ProjectController.{CaseColumn, CaseProject}
 import logic.HashHelper
-import neo4j.models.project.{ProjectColumn, Project, ProjectColumnType}
+import neo4j.models.project.{Project, ProjectColumn, ProjectColumnType}
 import neo4j.services.Neo4jProvider
 import play.api.data.Form
 import play.api.data.Forms._
@@ -22,6 +22,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def post(hash: String) = AuthenticatedBaseAction {
     implicit request =>
+      // TODO do authorization check
       ProjectController.projectForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn)),
         value => {
@@ -41,7 +42,6 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
             Neo4jProvider.get().projectRepository.save(project)
             Redirect(routes.ProjectController.edit(project.hash))
           } else {
-            // edit
             Redirect(routes.ProjectController.edit(hash))
           }
         }
@@ -54,6 +54,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
+    // TODO do authorization check
     implicit request =>
       val project = Neo4jProvider.get().projectRepository.findByHash(hash)
       val columns = if (project.columns != null) {
