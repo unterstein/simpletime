@@ -99,12 +99,12 @@ object ProjectController {
     )(CaseProject.apply)(CaseProject.unapply)
   )
 
-  def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn(None, "", ProjectColumnType.STRING.name())
+  def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn("", "", ProjectColumnType.STRING.name())
 
   def initialProjectForm()(implicit messages: play.api.i18n.Messages): Form[CaseProject] = {
     val columns = List(
-      CaseColumn(None, Messages("description"), ProjectColumnType.STRING.name()),
-      CaseColumn(None, Messages("planned"), ProjectColumnType.BOOLEAN.name())
+      CaseColumn("description", Messages("Description"), ProjectColumnType.STRING.name()),
+      CaseColumn("planned", Messages("Planned"), ProjectColumnType.BOOLEAN.name())
     )
     projectForm.fill(CaseProject(Messages("project.default"), columns))
   }
