@@ -2,7 +2,6 @@ package controllers
 
 import javax.inject.Inject
 
-import controllers.ProjectController.{CaseColumn, CaseProject}
 import logic.HashHelper
 import neo4j.models.project.{Project, ProjectColumn, ProjectColumnType}
 import neo4j.services.Neo4jProvider
@@ -23,7 +22,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
   def post(hash: String) = AuthenticatedBaseAction {
     implicit request =>
       ProjectController.projectForm.bindFromRequest.fold(
-        formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, ProjectController.initialColumn, ProjectController.columnTypes)),
+        formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, initialColumn, columnTypes)),
         value => {
           // TODO remove "new" hack
           if ("new".equals(hash)) {
@@ -62,7 +61,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def create = AuthenticatedBaseAction {
     implicit request =>
-      Ok(views.html.projectEdit("new", ProjectController.initialProjectForm, ProjectController.initialColumn, ProjectController.columnTypes))
+      Ok(views.html.projectEdit("new", initialProjectForm, initialColumn, columnTypes))
   }
 
   def delete(hash: String) = AuthenticatedBaseAction {
@@ -85,18 +84,26 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         List()
       }
       val caseProject = CaseProject(project.name, columns)
-      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), ProjectController.initialColumn, ProjectController.columnTypes))
+      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), initialColumn, columnTypes))
   }
 
   override def messagesApi: MessagesApi = messages
+
+  def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn("", "", ProjectColumnType.STRING.name())
+
+  def initialProjectForm(): Form[CaseProject] = {
+    val columns = List(
+      CaseColumn("description", Messages("Description"), ProjectColumnType.STRING.name()),
+      CaseColumn("planned", Messages("Planned"), ProjectColumnType.BOOLEAN.name())
+    )
+    ProjectController.projectForm.fill(CaseProject(Messages("project.default"), columns))
+  }
+
+  def columnTypes: String = "[\"" + ProjectColumnType.values().map { e => e.name}.mkString("\",\"") + "\"]"
 }
 
+// TODO move this to class
 object ProjectController {
-
-  case class CaseColumn(columnKey: String, columnName: String, columnType: String)
-
-  case class CaseProject(name: String, columns: List[CaseColumn])
-
   val projectForm: Form[CaseProject] = Form(
     mapping(
       "name" -> nonEmptyText,
@@ -107,16 +114,8 @@ object ProjectController {
       )(CaseColumn.apply)(CaseColumn.unapply))
     )(CaseProject.apply)(CaseProject.unapply)
   )
-
-  def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn("", "", ProjectColumnType.STRING.name())
-
-  def initialProjectForm()(implicit messages: play.api.i18n.Messages): Form[CaseProject] = {
-    val columns = List(
-      CaseColumn("description", Messages("Description"), ProjectColumnType.STRING.name()),
-      CaseColumn("planned", Messages("Planned"), ProjectColumnType.BOOLEAN.name())
-    )
-    projectForm.fill(CaseProject(Messages("project.default"), columns))
-  }
-
-  def columnTypes: String = "[\"" + ProjectColumnType.values().map { e => e.name}.mkString("\",\"") + "\"]"
 }
+
+case class CaseColumn(columnKey: String, columnName: String, columnType: String)
+
+case class CaseProject(name: String, columns: List[CaseColumn])

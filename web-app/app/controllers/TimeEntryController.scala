@@ -24,16 +24,11 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
   }
 
   override def messagesApi: MessagesApi = messages
+
 }
 
+// TODO move this to class
 object TimeEntryController {
-
-  case class CaseEntries(name: String, entries: List[CaseEntry])
-
-  case class CaseEntry(start: Long, end: Long, props: List[Prop])
-
-  case class Prop(key: String, value: String)
-
   val entryForm: Form[CaseEntries] = Form(
     mapping(
       "name" -> nonEmptyText,
@@ -48,3 +43,10 @@ object TimeEntryController {
     )(CaseEntries.apply)(CaseEntries.unapply)
   )
 }
+
+case class CaseEntries(name: String, entries: List[CaseEntry])
+
+case class CaseEntry(start: Long, end: Long, props: List[Prop])
+
+case class Prop(key: String, value: String)
+
