@@ -12,8 +12,8 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
 
   def login = BaseAction {
     implicit request =>
-      UserController.loginForm.bindFromRequest.fold(
-        formWithErrors => Ok(views.html.login(formWithErrors, UserController.registerForm)),
+      loginForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.login(formWithErrors, registerForm)),
         value => {
           val user = Neo4jProvider.get().userRepository.findByEmail(value.loginEmail)
           Redirect(routes.ApplicationController.index).withSession(USER_HASH -> user.hash)
@@ -28,8 +28,8 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
 
   def register = BaseAction {
     implicit request =>
-      UserController.registerForm.bindFromRequest.fold(
-        formWithErrors => Ok(views.html.login(UserController.loginForm, formWithErrors)),
+      registerForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.login(loginForm, formWithErrors)),
         value => {
           val user = UserLogic.createUser(value.registerEmail, value.registerPassword)
           Redirect(routes.ApplicationController.index).withSession(USER_HASH -> user.hash)
@@ -39,15 +39,10 @@ class UserController @Inject()(messages: MessagesApi) extends BaseController {
 
   def index = BaseAction {
     implicit request =>
-      Ok(views.html.login(UserController.loginForm, UserController.registerForm))
+      Ok(views.html.login(loginForm, registerForm))
   }
 
   override def messagesApi: MessagesApi = messages
-}
-
-object UserController {
-
-  case class Register(registerEmail: String, registerPassword: String, registerPassword2: String)
 
   val registerForm: Form[Register] = Form(
     mapping(
@@ -60,8 +55,6 @@ object UserController {
       Neo4jProvider.get().userRepository.findByEmail(register.registerEmail) == null)
   )
 
-  case class Login(loginEmail: String, loginPassword: String)
-
   val loginForm: Form[Login] = Form(
     mapping(
       "loginEmail" -> email,
@@ -71,3 +64,7 @@ object UserController {
         )
   )
 }
+
+case class Login(loginEmail: String, loginPassword: String)
+
+case class Register(registerEmail: String, registerPassword: String, registerPassword2: String)
