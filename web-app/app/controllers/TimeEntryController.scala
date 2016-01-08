@@ -2,15 +2,23 @@ package controllers
 
 import javax.inject.Inject
 
+import neo4j.services.Neo4jProvider
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.i18n.MessagesApi
+
+import scala.collection.JavaConversions._
 
 class TimeEntryController @Inject()(messages: MessagesApi) extends BaseController {
 
   def listEntries(projectHash: String) = AuthenticatedBaseAction {
     implicit request =>
-      Ok("")
+      val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(projectHash, request.user)
+      val dbEntries = Neo4jProvider.get().timeEntryRepository.findByProject(dbProject)
+
+      val entries = dbEntries.map(entry => CaseEntry(entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
+
+      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList))))
   }
 
   def create(projectHash: String) = AuthenticatedBaseAction {
@@ -38,6 +46,8 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       )(CaseEntry.apply)(CaseEntry.unapply))
     )(CaseEntries.apply)(CaseEntries.unapply)
   )
+
+  def mapToProps(input: Map[String, String]): List[Prop] = input.map { case (key: String, value: String) => Prop(key, value)}.toList
 }
 
 case class CaseEntries(name: String, entries: List[CaseEntry])

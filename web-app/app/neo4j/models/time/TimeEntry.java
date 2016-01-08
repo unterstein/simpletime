@@ -24,5 +24,5 @@ public class TimeEntry extends HashedEntity {
 
   public Long endTime;
 
-  public Map<String, Object> properties;
+  public Map<String, String> properties;
 }
