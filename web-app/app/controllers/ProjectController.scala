@@ -14,14 +14,14 @@ import scala.collection.JavaConverters._
 
 class ProjectController @Inject()(messages: MessagesApi) extends BaseController {
 
-  def list = AuthenticatedBaseAction {
+  def listProjects = AuthenticatedBaseAction {
     implicit request =>
       Ok(views.html.projectList(Neo4jProvider.get().projectRepository.findByUserAndActive(request.user, true).toList))
   }
 
   def post(hash: String) = AuthenticatedBaseAction {
     implicit request =>
-      ProjectController.projectForm.bindFromRequest.fold(
+      projectForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, initialColumn, columnTypes)),
         value => {
           // TODO remove "new" hack
@@ -69,7 +69,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
       val project = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
       project.active = false
       Neo4jProvider.get().projectRepository.save(project)
-      Redirect(routes.ProjectController.list())
+      Redirect(routes.ProjectController.listProjects())
   }
 
   def edit(hash: String) = AuthenticatedBaseAction {
@@ -84,7 +84,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         List()
       }
       val caseProject = CaseProject(project.name, columns)
-      Ok(views.html.projectEdit(hash, ProjectController.projectForm.fill(caseProject), initialColumn, columnTypes))
+      Ok(views.html.projectEdit(hash, projectForm.fill(caseProject), initialColumn, columnTypes))
   }
 
   override def messagesApi: MessagesApi = messages
@@ -96,14 +96,11 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
       CaseColumn("description", Messages("Description"), ProjectColumnType.STRING.name()),
       CaseColumn("planned", Messages("Planned"), ProjectColumnType.BOOLEAN.name())
     )
-    ProjectController.projectForm.fill(CaseProject(Messages("project.default"), columns))
+    projectForm.fill(CaseProject(Messages("project.default"), columns))
   }
 
   def columnTypes: String = "[\"" + ProjectColumnType.values().map { e => e.name}.mkString("\",\"") + "\"]"
-}
 
-// TODO move this to class
-object ProjectController {
   val projectForm: Form[CaseProject] = Form(
     mapping(
       "name" -> nonEmptyText,

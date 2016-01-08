@@ -10,14 +10,14 @@ POST        /logout                                           controllers.UserCo
 POST        /register                                         controllers.UserController.register
 
 ## projects
-GET         /projects                                         controllers.ProjectController.list
+GET         /projects                                         controllers.ProjectController.listProjects
 GET         /projects/new                                     controllers.ProjectController.create
 GET         /projects/:hash/delete                            controllers.ProjectController.delete(hash: String)
 GET         /projects/:hash                                   controllers.ProjectController.edit(hash: String)
 POST        /projects/:hash                                   controllers.ProjectController.post(hash: String)
 
 ## time entries
-GET         /projects/:projectHash/entries                    controllers.TimeEntryController.list(projectHash: String)
+GET         /projects/:projectHash/entries                    controllers.TimeEntryController.listEntries(projectHash: String)
 POST        /projects/:projectHash/entries                    controllers.TimeEntryController.create(projectHash: String)
 POST        /projects/:projectHash/entries/:entityHash        controllers.TimeEntryController.edit(projectHash: String, entityHash: String)
 

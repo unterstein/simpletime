@@ -8,7 +8,7 @@ import play.api.i18n.MessagesApi
 
 class TimeEntryController @Inject()(messages: MessagesApi) extends BaseController {
 
-  def list(projectHash: String) = AuthenticatedBaseAction {
+  def listEntries(projectHash: String) = AuthenticatedBaseAction {
     implicit request =>
       Ok("")
   }
@@ -25,10 +25,6 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
   override def messagesApi: MessagesApi = messages
 
-}
-
-// TODO move this to class
-object TimeEntryController {
   val entryForm: Form[CaseEntries] = Form(
     mapping(
       "name" -> nonEmptyText,
