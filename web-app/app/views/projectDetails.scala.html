@@ -13,6 +13,15 @@
         </p>
       }
       <legend>@Messages("project"): <span data-bind="text: name"> </span></legend>
+      <div class="form-group">
+        <table class="table table-bordered table-striped">
+          <thead>
+            <tr data-bind="foreach: columns">
+              <th data-bind="text: columnName"></th>
+            </tr>
+          </thead>
+        </table>
+      </div>
     </fieldset>
   }
 </div>

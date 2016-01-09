@@ -18,7 +18,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
       val entries = dbEntries.map(entry => CaseEntry(entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
 
-      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList))))
+      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList, projectToColumnList(dbProject)))))
   }
 
   def create(projectHash: String) = AuthenticatedBaseAction {
@@ -43,14 +43,19 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
           "key" -> nonEmptyText,
           "value" -> nonEmptyText
         )(Prop.apply)(Prop.unapply))
-      )(CaseEntry.apply)(CaseEntry.unapply))
+      )(CaseEntry.apply)(CaseEntry.unapply)),
+      "columns" -> list(mapping(
+        "columnKey" -> nonEmptyText,
+        "columnName" -> nonEmptyText,
+        "columnType" -> nonEmptyText
+      )(CaseColumn.apply)(CaseColumn.unapply))
     )(CaseEntries.apply)(CaseEntries.unapply)
   )
 
   def mapToProps(input: Map[String, String]): List[Prop] = input.map { case (key: String, value: String) => Prop(key, value)}.toList
 }
 
-case class CaseEntries(name: String, entries: List[CaseEntry])
+case class CaseEntries(name: String, entries: List[CaseEntry], columns: List[CaseColumn])
 
 case class CaseEntry(start: Long, end: Long, props: List[Prop])
 
