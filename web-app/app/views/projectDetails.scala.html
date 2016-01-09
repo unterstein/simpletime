@@ -20,6 +20,11 @@
               <th data-bind="text: columnName"></th>
             </tr>
           </thead>
+          <tbody data-bind="foreach: entries">
+            <tr data-bind="foreach: $parent.columns">
+              TODO
+            </tr>
+          </tbody>
         </table>
       </div>
     </fieldset>
