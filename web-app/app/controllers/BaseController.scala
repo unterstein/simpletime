@@ -1,11 +1,13 @@
 package controllers
 
 import com.google.gson.Gson
+import neo4j.models.project.Project
 import neo4j.models.user.User
 import neo4j.services.Neo4jProvider
 import play.api.i18n.I18nSupport
 import play.api.mvc.Security.AuthenticatedRequest
 import play.api.mvc._
+import scala.collection.JavaConversions._
 
 /**
  * @author Johannes Unterstein (unterstein@me.com)
@@ -44,6 +46,17 @@ trait BaseController extends Controller with I18nSupport {
         } else {
           None
         }
+    }
+  }
+
+  def projectToColumnList(project: Project): List[CaseColumn] = {
+    if (project.columns != null) {
+      project.getColumns.map {
+        column =>
+          CaseColumn(column.key, column.name, column.`type`.name()) // TODO column.properties
+      }.toList
+    } else {
+      List()
     }
   }
 }

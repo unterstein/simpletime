@@ -75,14 +75,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
   def edit(hash: String) = AuthenticatedBaseAction {
     implicit request =>
       val project = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
-      val columns = if (project.columns != null) {
-        project.getColumns.map {
-          column =>
-            CaseColumn(column.key, column.name, column.`type`.name()) // TODO column.properties
-        }.toList
-      } else {
-        List()
-      }
+      val columns = projectToColumnList(project)
       val caseProject = CaseProject(project.name, columns)
       Ok(views.html.projectEdit(hash, projectForm.fill(caseProject), initialColumn, columnTypes))
   }
