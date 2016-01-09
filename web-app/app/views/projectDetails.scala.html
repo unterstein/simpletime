@@ -1,10 +1,10 @@
-@(hash: String, timeEntryForm: Form[CaseEntries])(implicit request: Request[Any], messages: Messages)
+@(hash: String, timeEntryForm: Form[CaseEntries], entry: CaseEntry)(implicit request: Request[Any], messages: Messages)
 
 @import logic.JsonHelper
 
 @main() {
   @*TODO replace projectForm.get*@
-<div id="datamodel" class="well" data-page="project" data-model='@{Html(JsonHelper.toJson(timeEntryForm.get))}'>
+<div id="datamodel" class="well" data-page="details" data-model='@{Html(JsonHelper.toJson(timeEntryForm.get))}' data-entry='@{Html(JsonHelper.toJson(entry))}'>
   @helper.form(routes.ProjectController.post(hash), 'class -> "form-horizontal") {
     <fieldset>
       @if(timeEntryForm.hasErrors) {
@@ -22,10 +22,11 @@
           </thead>
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns">
-              TODO
+              <td>TODO</td>
             </tr>
           </tbody>
         </table>
+        <a class="btn btn-default pull-right clearfix" id="newEntry" href="#">@Messages("entry.new")</a>
       </div>
     </fieldset>
   }

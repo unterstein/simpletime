@@ -33,6 +33,19 @@ $(function () {
     }
   }
 
+  if (datamodel.data("page") == "details") {
+    var model = datamodel.data("model");
+    var entry = datamodel.data("entry");
+    var viewModel = ko.mapping.fromJS(model);
+
+    ko.applyBindings(viewModel);
+
+    $("#newEntry").click(function () {
+      viewModel.entries.push(cloneObservable(entry));
+      return false;
+    });
+  }
+
   function cloneObservable(observableObject) {
     return ko.mapping.fromJS(ko.toJS(observableObject));
   }

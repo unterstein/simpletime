@@ -21,6 +21,7 @@ column.type=Column type
 column.new=New column
 entry.start=Start time
 entry.end=End time
+entry.new=New entry
 
 # form stuff
 loginEmail=E-Mail
