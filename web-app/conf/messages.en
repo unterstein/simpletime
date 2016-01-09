@@ -19,6 +19,8 @@ column.key=Column key (do not edit after creation!)
 column.name=Column name
 column.type=Column type
 column.new=New column
+entry.start=Start time
+entry.end=End time
 
 # form stuff
 loginEmail=E-Mail

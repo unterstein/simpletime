@@ -18,7 +18,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
       val entries = dbEntries.map(entry => CaseEntry(entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
 
-      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList, projectToColumnList(dbProject)))))
+      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList, defaultColumns ++ projectToColumnList(dbProject)))))
   }
 
   def create(projectHash: String) = AuthenticatedBaseAction {

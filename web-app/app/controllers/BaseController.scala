@@ -1,10 +1,10 @@
 package controllers
 
 import com.google.gson.Gson
-import neo4j.models.project.Project
+import neo4j.models.project.{ProjectColumnType, Project}
 import neo4j.models.user.User
 import neo4j.services.Neo4jProvider
-import play.api.i18n.I18nSupport
+import play.api.i18n.{Messages, I18nSupport}
 import play.api.mvc.Security.AuthenticatedRequest
 import play.api.mvc._
 import scala.collection.JavaConversions._
@@ -59,4 +59,6 @@ trait BaseController extends Controller with I18nSupport {
       List()
     }
   }
+
+  def defaultColumns()(implicit lang: play.api.i18n.Lang) = List(CaseColumn("start", Messages("entry.start"), ProjectColumnType.TIME.name()), CaseColumn("end", Messages("entry.end"), ProjectColumnType.TIME.name()))
 }
