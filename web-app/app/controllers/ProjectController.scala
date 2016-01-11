@@ -84,7 +84,7 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
 
   def initialColumn()(implicit messages: play.api.i18n.Messages) = CaseColumn("", "", ProjectColumnType.STRING.name())
 
-  def initialProjectForm(): Form[CaseProject] = {
+  def initialProjectForm()(implicit lang: play.api.i18n.Lang): Form[CaseProject] = {
     val columns = List(
       CaseColumn("description", Messages("Description"), ProjectColumnType.STRING.name()),
       CaseColumn("planned", Messages("Planned"), ProjectColumnType.BOOLEAN.name())
