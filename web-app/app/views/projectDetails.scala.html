@@ -23,7 +23,7 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns">
               <td>
-                <input type="text" data-bind="value: pickElement($parent, columnKey)" />
+                <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType)}" />
               </td>
             </tr>
           </tbody>

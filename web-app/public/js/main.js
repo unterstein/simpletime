@@ -55,6 +55,21 @@ window.columnTypes = function() {
   return $("#datamodel").data("types");
 };
 
+window.pickType = function(columnType) {
+  switch(columnType()) {
+    case "STRING":
+      return "text";
+    case "BOOLEAN":
+      return "checkbox";
+    case "TIME":
+      return "text";
+    case "ENUM":
+      return "text"; // TODO
+    default:
+      return "text";
+  }
+};
+
 window.pickElement = function(entry, key) {
   switch(key()) {
     case "start":
