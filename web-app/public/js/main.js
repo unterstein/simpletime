@@ -62,7 +62,6 @@ window.pickElement = function(entry, key) {
     case "end":
       return entry.end();
     default:
-        // TODO
-      return entry.props();
+      return entry.props().filter(function(element) { return element.key() == key();});
   }
 };
