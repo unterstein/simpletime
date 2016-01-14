@@ -54,3 +54,15 @@ $(function () {
 window.columnTypes = function() {
   return $("#datamodel").data("types");
 };
+
+window.pickElement = function(entry, key) {
+  switch(key()) {
+    case "start":
+      return entry.start();
+    case "end":
+      return entry.end();
+    default:
+        // TODO
+      return entry.props();
+  }
+};
