@@ -14,7 +14,7 @@
       }
       <legend>@Messages("project"): <span data-bind="text: name"> </span></legend>
       <div class="form-group">
-        <table class="table table-bordered table-striped">
+        <table class="table table-bordered table-striped focus-marker">
           <thead>
             <tr data-bind="foreach: columns">
               <th data-bind="text: columnName"></th>
@@ -23,7 +23,7 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns">
               <td>
-                <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType)}" />
+                <input class="form-control" data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType)}" />
               </td>
             </tr>
           </tbody>
