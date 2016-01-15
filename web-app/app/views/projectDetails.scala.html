@@ -5,7 +5,7 @@
 @main() {
   @*TODO replace projectForm.get*@
 <div id="datamodel" class="well" data-page="details" data-model='@{Html(JsonHelper.toJson(timeEntryForm.get))}' data-entry='@{Html(JsonHelper.toJson(entry))}'>
-  @helper.form(routes.ProjectController.post(hash), 'class -> "form-horizontal") {
+  @helper.form(routes.TimeEntryController.post(hash), 'class -> "form-horizontal") {
     <fieldset>
       @if(timeEntryForm.hasErrors) {
         <p class="alert alert-danger">
@@ -28,8 +28,14 @@
             </tr>
           </tbody>
         </table>
-        <a class="btn btn-danger pull-left clearfix" href="@routes.ProjectController.listProjects()">@Messages("back")</a>
-        <a class="btn btn-default pull-right clearfix" id="newEntry" href="#">@Messages("entry.new")</a>
+        <div class="clearfix">
+          <a class="btn btn-default pull-right" id="newEntry" href="# ">@Messages("entry.new")</a>
+        </div>
+        <hr/>
+        <div class="clearfix">
+          <a class="btn btn-danger pull-left" href="@routes.ProjectController.listProjects()">@Messages("back")</a>
+          <button type="submit" class="btn btn-primary btn-lg pull-right">@Messages("save")</button>
+        </div>
       </div>
     </fieldset>
   }

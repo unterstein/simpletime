@@ -10,6 +10,7 @@ name=Name
 create=Create
 edit=Edit
 back=Back
+save=Save
 delete=Delete
 
 # projects

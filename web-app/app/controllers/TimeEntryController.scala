@@ -26,12 +26,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
     CaseEntry(0L, 0L, columns.map(column => Prop(column.columnKey, "")).toList)
   }
 
-  def create(projectHash: String) = AuthenticatedBaseAction {
-    implicit request =>
-      Ok("")
-  }
-
-  def edit(projectHash: String, entityHash: String) = AuthenticatedBaseAction {
+  def post(projectHash: String) = AuthenticatedBaseAction {
     implicit request =>
       Ok("")
   }
