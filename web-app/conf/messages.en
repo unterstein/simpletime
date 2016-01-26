@@ -2,6 +2,7 @@ title=Simple time - book your time fast and easy
 email=E-Mail
 register=Register
 login=Login
+logout=Logout
 password=Password
 repassword=Repeat password
 details=Details

@@ -6,7 +6,7 @@ GET         /                                     controllers.ApplicationControl
 ## sign in, sign out
 GET         /signin                               controllers.UserController.index
 POST        /login                                controllers.UserController.login
-POST        /logout                               controllers.UserController.logout
+GET         /logout                               controllers.UserController.logout
 POST        /register                             controllers.UserController.register
 
 ## projects
