@@ -3,6 +3,7 @@ package logic
 import java.lang.reflect.Type
 
 import com.google.gson._
+import play.api.data.Form
 
 import scala.collection.JavaConverters._
 
@@ -11,7 +12,10 @@ import scala.collection.JavaConverters._
  */
 object JsonHelper {
 
-  val gson = new GsonBuilder().registerTypeAdapter(classOf[List[Any]], new ListSerializer()).create()
+  val gson = new GsonBuilder()
+    .registerTypeAdapter(classOf[List[Any]], new ListSerializer())
+    .registerTypeAdapter(classOf[Form[Any]], new FormSerializer())
+    .create()
 
 
   def toJson(obj: Object): String = gson.toJson(obj)
@@ -22,6 +26,19 @@ object JsonHelper {
 
     override def serialize(src: List[Any], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
       gson.toJsonTree(src.asJava)
+    }
+  }
+
+  class FormSerializer extends JsonSerializer[Form[Any]] {
+
+    override def serialize(src: Form[Any], typeOfSrc: Type, context: JsonSerializationContext): JsonElement = {
+      if (src.value.isDefined) {
+        gson.toJsonTree(src.get)
+      } else {
+        // fuck
+        // TODO
+        gson.toJsonTree(src.data.asJava)
+      }
     }
   }
 
