@@ -35,7 +35,6 @@ object JsonHelper {
       if (src.value.isDefined) {
         gson.toJsonTree(src.get)
       } else {
-        // fuck
         // TODO, maybe create new form without constraints?
         gson.toJsonTree(src.data.asJava)
       }
