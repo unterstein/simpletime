@@ -22,13 +22,13 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns">
               <td>
-                <input class="form-control" data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType)}" />
+                <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType)}" />
               </td>
             </tr>
           </tbody>
         </table>
         <div class="clearfix">
-          <a class="btn btn-default pull-right" id="newEntry" href="#">@Messages("entry.new")</a>
+          <a class="btn btn-default pull-right" id="newEntry" href="#" onclick="return false;">@Messages("entry.new")</a>
         </div>
         <hr/>
         <div class="clearfix">
