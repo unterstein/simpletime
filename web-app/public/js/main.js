@@ -11,16 +11,19 @@ $(function () {
     $("#newColumn").click(function () {
       viewModel.columns.push(cloneObservable(column));
       updateNames();
+      initComponents();
       return false;
     });
 
     $(document).on("click", ".deleteColumn", function () {
       $(".deleteColumn").index(this);
       updateNames();
+      initComponents();
       return false;
     });
 
     updateNames();
+    initComponents();
 
     function updateNames() {
       var columns= $(".columns");
@@ -42,6 +45,7 @@ $(function () {
 
     $("#newEntry").click(function () {
       viewModel.entries.push(cloneObservable(entry));
+      initDatePicker();
       $(".focus-marker").find("tr:last :input:first").focus().selectAll();
       return false;
     });
@@ -49,6 +53,20 @@ $(function () {
 
   function cloneObservable(observableObject) {
     return ko.mapping.fromJS(ko.toJS(observableObject));
+  }
+
+  function initComponents() {
+    initDatePicker();
+  }
+
+  function initDatePicker() {
+    $(".datetime").each(function (i, elem) {
+      var data = $(elem).data("DateTimePicker");
+      if (data != undefined) {
+        data.destroy();
+      }
+      $(elem).datetimepicker();
+    });
   }
 });
 
@@ -68,6 +86,15 @@ window.pickType = function(columnType) {
       return "text"; // TODO
     default:
       return "text";
+  }
+};
+
+window.pickClass = function(columnType) {
+  switch(columnType()) {
+    case "TIME":
+      return "form-control datetime";
+    default:
+      return "form-control";
   }
 };
 
