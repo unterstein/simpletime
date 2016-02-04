@@ -19,7 +19,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       val entries = dbEntries.map(entry => CaseEntry(entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
 
       val columns = projectToColumnList(dbProject)
-      Ok(views.html.projectDetails(projectHash, entryForm.fill(CaseEntries(dbProject.name, entries.toList, defaultColumns ++ columns)), exampleEntry(columns)))
+      Ok(views.html.projectDetails(projectHash, dbProject.name, entryForm.fill(CaseEntries(entries.toList, defaultColumns ++ columns)), exampleEntry(columns)))
   }
 
   def exampleEntry(columns: List[CaseColumn]) = {
@@ -28,14 +28,21 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
   def post(projectHash: String) = AuthenticatedBaseAction {
     implicit request =>
-      Ok("")
+      val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(projectHash, request.user)
+      val columns = projectToColumnList(dbProject)
+
+      entryForm.bindFromRequest.fold(
+        formWithErrors => Ok(views.html.projectDetails(projectHash, dbProject.name, formWithErrors, exampleEntry(columns))),
+        value => {
+          Ok("")
+        }
+      )
   }
 
   override def messagesApi: MessagesApi = messages
 
   val entryForm: Form[CaseEntries] = Form(
     mapping(
-      "name" -> nonEmptyText,
       "entries" -> list(mapping(
         "start" -> longNumber,
         "end" -> longNumber,
@@ -55,7 +62,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
   def mapToProps(input: Map[String, String]): List[Prop] = input.map { case (key: String, value: String) => Prop(key, value)}.toList
 }
 
-case class CaseEntries(name: String, entries: List[CaseEntry], columns: List[CaseColumn])
+case class CaseEntries(entries: List[CaseEntry], columns: List[CaseColumn])
 
 case class CaseEntry(start: Long, end: Long, props: List[Prop])
 

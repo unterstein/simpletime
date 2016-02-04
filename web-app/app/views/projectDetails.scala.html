@@ -1,4 +1,4 @@
-@(hash: String, timeEntryForm: Form[CaseEntries], entry: CaseEntry)(implicit request: Request[Any], messages: Messages)
+@(hash: String, name: String, timeEntryForm: Form[CaseEntries], entry: CaseEntry)(implicit request: Request[Any], messages: Messages)
 
 @import logic.JsonHelper
 
@@ -11,7 +11,7 @@
         @timeEntryForm.errors.map { msg => @if(msg.key != "") {@Messages(msg.key): }@Messages(msg.message, msg.args: _*)<br/> }
         </p>
       }
-      <legend>@Messages("project"): <span data-bind="text: name"> </span></legend>
+      <legend>@Messages("project"): @name</legend>
       <div class="form-group">
         <table class="table table-bordered table-striped focus-marker">
           <thead>
