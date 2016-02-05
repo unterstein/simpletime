@@ -13,7 +13,7 @@
       }
       <legend>@Messages("project"): @name</legend>
       <div class="form-group">
-        <table class="table table-bordered table-striped focus-marker">
+        <table class="table table-bordered table-striped focus-marker picker-wrapper">
           <thead>
             <tr data-bind="foreach: columns">
               <th data-bind="text: columnName"></th>
@@ -22,9 +22,9 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns">
               <td>
-                @*<div class="form-group">*@
+                <div>
                   <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType)}" />
-                @*</div>*@
+                </div>
               </td>
             </tr>
           </tbody>
