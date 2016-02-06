@@ -16,7 +16,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(projectHash, request.user)
       val dbEntries = Neo4jProvider.get().timeEntryRepository.findByProject(dbProject)
 
-      val entries = dbEntries.map(entry => CaseEntry(entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
+      val entries = dbEntries.map(entry => CaseEntry(entry.id, entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
 
       val columns = projectToColumnList(dbProject)
       Ok(views.html.projectDetails(projectHash, dbProject.name, entryForm.fill(CaseEntries(entries.toList, defaultColumns ++ columns)), exampleEntry(columns)))
@@ -64,7 +64,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
 case class CaseEntries(entries: List[CaseEntry], columns: List[CaseColumn])
 
-case class CaseEntry(start: Long, end: Long, props: List[Prop])
+case class CaseEntry(id: Long, start: Long, end: Long, props: List[Prop])
 
 case class Prop(key: String, value: String)
 
