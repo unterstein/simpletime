@@ -23,7 +23,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
   }
 
   def exampleEntry(columns: List[CaseColumn]) = {
-    CaseEntry(0L, 0L, columns.map(column => Prop(column.columnKey, "")).toList)
+    CaseEntry(-1L, 0L, 0L, columns.map(column => Prop(column.columnKey, "")).toList)
   }
 
   def post(projectHash: String) = AuthenticatedBaseAction {
@@ -44,6 +44,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
   val entryForm: Form[CaseEntries] = Form(
     mapping(
       "entries" -> list(mapping(
+        "id" -> longNumber,
         "start" -> longNumber,
         "end" -> longNumber,
         "props" -> list(mapping(
