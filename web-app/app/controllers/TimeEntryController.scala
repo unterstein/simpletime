@@ -34,6 +34,15 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       entryForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectDetails(projectHash, dbProject.name, formWithErrors, exampleEntry(columns))),
         value => {
+          value.entries.foreach {
+            entry =>
+              val filteredElement: TimeEntry = dbProject.timeEntries.filter(p => p.id == entry.id)
+              if (entry.id > 0 && filteredElement != null) {
+                // update
+              } else {
+                // create new
+              }
+          }
           Ok("")
         }
       )
