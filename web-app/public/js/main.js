@@ -46,9 +46,23 @@ $(function () {
     $("#newEntry").click(function () {
       viewModel.entries.push(cloneObservable(entry));
       initDatePicker();
-      $(".focus-marker").find("tr:last :input:first").focus().selectAll();
+      updateNames();
+      $(".focus-marker").find("tr:last :input:visible:first").focus().selectAll();
       return false;
     });
+
+    updateNames();
+
+    function updateNames() {
+      var columns = $(".columns");
+      columns.each(function () {
+        var index = columns.index(this);
+        $(this).find(".form-control").each(function () {
+          var type = $(this).attr("entryType");
+          $(this).attr("name", "entries[" + index + "]." + type)
+        });
+      });
+    }
   }
 
   function cloneObservable(observableObject) {
@@ -98,8 +112,19 @@ window.pickClass = function(columnType) {
   }
 };
 
+window.pickTableClass = function(columnType) {
+  switch(columnType()) {
+    case "HIDDEN":
+      return "table-hidden";
+    default:
+      return "";
+  }
+};
+
 window.pickElement = function(entry, key) {
   switch(key()) {
+    case "id":
+      return entry.id();
     case "start":
       return entry.start();
     case "end":

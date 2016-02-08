@@ -16,15 +16,13 @@
         <table class="table table-bordered table-striped focus-marker picker-wrapper">
           <thead>
             <tr data-bind="foreach: columns">
-              <th data-bind="text: columnName"></th>
+              <th data-bind="text: columnName, attr: {class: pickTableClass(columnType)}"></th>
             </tr>
           </thead>
           <tbody data-bind="foreach: entries">
-            <tr data-bind="foreach: $parent.columns">
-              <td>
-                <div>
-                  <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType)}" />
-                </div>
+            <tr data-bind="foreach: $parent.columns" class="columns">
+              <td data-bind="attr: {class: pickTableClass(columnType)}">
+                <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), entryType: columnKey}" />
               </td>
             </tr>
           </tbody>

@@ -5,3 +5,7 @@ body {
 .picker-wrapper {
   position: relative;
 }
+
+.table-hidden {
+  display: none;
+}

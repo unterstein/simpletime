@@ -21,6 +21,7 @@ column.key=Column key (do not edit after creation!)
 column.name=Column name
 column.type=Column type
 column.new=New column
+entry.id=ID
 entry.start=Start time
 entry.end=End time
 entry.new=New entry
