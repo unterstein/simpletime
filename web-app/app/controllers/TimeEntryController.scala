@@ -37,14 +37,25 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
         value => {
           value.entries.foreach {
             entry =>
-              val filteredElement: TimeEntry = dbProject.timeEntries.filter(p => p.id == entry.id)
-              if (entry.id > 0 && filteredElement != null) {
-                // update
-
+              val filteredElements = dbProject.timeEntries.filter(p => p.id == entry.id)
+              val updateEntry: TimeEntry = if (entry.id > 0 && filteredElements.size == 1) {
+                // update existing
+                filteredElements.toList.get(0)
               } else {
-                // create new
+                // create new, add and modify
+                val newEntry = new TimeEntry
+                dbProject.timeEntries.add(newEntry)
+                newEntry
+              }
+              updateEntry.startTime = entry.start
+              updateEntry.endTime = entry.end
+              updateEntry.properties.clear()
+              entry.props.foreach {
+                prop =>
+                  updateEntry.properties.put(prop.key, prop.value)
               }
           }
+          Neo4jProvider.get().projectRepository.save(dbProject)
           Ok("")
         }
       )
