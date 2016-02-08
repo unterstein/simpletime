@@ -2,6 +2,7 @@ package controllers
 
 import javax.inject.Inject
 
+import neo4j.models.time.TimeEntry
 import neo4j.services.Neo4jProvider
 import play.api.data.Form
 import play.api.data.Forms._
@@ -39,6 +40,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
               val filteredElement: TimeEntry = dbProject.timeEntries.filter(p => p.id == entry.id)
               if (entry.id > 0 && filteredElement != null) {
                 // update
+
               } else {
                 // create new
               }
