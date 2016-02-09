@@ -46,14 +46,14 @@ $(function () {
     $("#newEntry").click(function () {
       viewModel.entries.push(cloneObservable(entry));
       initDatePicker();
-      updateNames();
+      updateColumnNames();
       $(".focus-marker").find("tr:last :input:visible:first").focus().selectAll();
       return false;
     });
 
-    updateNames();
+    updateColumnNames();
 
-    function updateNames() {
+    function updateColumnNames() {
       var columns = $(".columns");
       columns.each(function () {
         var index = columns.index(this);
@@ -126,9 +126,9 @@ window.pickElement = function(entry, key) {
     case "id":
       return entry.id();
     case "start":
-      return entry.start();
+      return new Date(entry.start());
     case "end":
-      return entry.end();
+      return new Date(entry.end());
     default:
       return entry.props().filter(function(element) { return element.key() == key();})[0].value();
   }
