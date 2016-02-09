@@ -16,7 +16,10 @@ $(function () {
     });
 
     $(document).on("click", ".deleteColumn", function () {
-      $(".deleteColumn").index(this);
+      var index = $(".deleteColumn").index(this);
+      viewModel.columns.remove(function (column) {
+        return $($(".deleteColumn")[index].closest("tr")).find(":input:first").val() == column.columnKey();
+      });
       updateNames();
       initComponents();
       return false;
