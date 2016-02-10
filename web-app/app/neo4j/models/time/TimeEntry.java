@@ -8,6 +8,7 @@ import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.neo4j.annotation.NodeEntity;
 import org.springframework.data.neo4j.annotation.RelatedTo;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -24,5 +25,5 @@ public class TimeEntry extends HashedEntity {
 
   public Long endTime;
 
-  public Map<String, String> properties;
+  public Map<String, String> properties = new HashMap<>();
 }
