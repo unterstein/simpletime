@@ -1,7 +1,9 @@
 package controllers
 
+import java.util.Date
 import javax.inject.Inject
 
+import logic.JsonHelper
 import neo4j.models.time.TimeEntry
 import neo4j.services.Neo4jProvider
 import play.api.data.Form
@@ -17,14 +19,14 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(projectHash, request.user)
       val dbEntries = Neo4jProvider.get().timeEntryRepository.findByProject(dbProject)
 
-      val entries = dbEntries.map(entry => CaseEntry(entry.id, entry.startTime, entry.endTime, mapToProps(entry.properties.toMap)))
+      val entries = dbEntries.map(entry => CaseEntry(entry.id, new Date(entry.startTime), new Date(entry.endTime), mapToProps(if (entry.properties == null) Map() else entry.properties.toMap)))
 
       val columns = projectToColumnList(dbProject)
       Ok(views.html.projectDetails(projectHash, dbProject.name, entryForm.fill(CaseEntries(entries.toList, defaultColumns ++ columns)), exampleEntry(columns)))
   }
 
   def exampleEntry(columns: List[CaseColumn]) = {
-    CaseEntry(-1L, 0L, 0L, columns.map(column => Prop(column.columnKey, "")).toList)
+    CaseEntry(-1L, new Date(), new Date(), columns.map(column => Prop(column.columnKey, "")).toList)
   }
 
   def post(projectHash: String) = AuthenticatedBaseAction {
@@ -35,7 +37,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       entryForm.bindFromRequest.fold(
         formWithErrors => Ok(views.html.projectDetails(projectHash, dbProject.name, formWithErrors, exampleEntry(columns))),
         value => {
-          value.entries.foreach {
+          val entries = value.entries.map {
             entry =>
               val filteredElements = dbProject.timeEntries.filter(p => p.id == entry.id)
               val updateEntry: TimeEntry = if (entry.id > 0 && filteredElements.size == 1) {
@@ -44,19 +46,20 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
               } else {
                 // create new, add and modify
                 val newEntry = new TimeEntry
-                dbProject.timeEntries.add(newEntry)
+                newEntry.project = dbProject
                 newEntry
               }
-              updateEntry.startTime = entry.start
-              updateEntry.endTime = entry.end
+              updateEntry.startTime = entry.start.getTime
+              updateEntry.endTime = entry.end.getTime
               updateEntry.properties.clear()
               entry.props.foreach {
                 prop =>
                   updateEntry.properties.put(prop.key, prop.value)
               }
-          }
-          Neo4jProvider.get().projectRepository.save(dbProject)
-          Ok("")
+              updateEntry
+          }.toList
+          Neo4jProvider.get().timeEntryRepository.save(entries)
+          Redirect(routes.TimeEntryController.listEntries(projectHash))
         }
       )
   }
@@ -67,8 +70,9 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
     mapping(
       "entries" -> list(mapping(
         "id" -> longNumber,
-        "start" -> longNumber,
-        "end" -> longNumber,
+      // 09/20/0016 7:57 PM
+        "start" -> date(JsonHelper.DATE_PATTERN),
+        "end" -> date(JsonHelper.DATE_PATTERN),
         "props" -> list(mapping(
           "key" -> nonEmptyText,
           "value" -> nonEmptyText
@@ -87,7 +91,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
 
 case class CaseEntries(entries: List[CaseEntry], columns: List[CaseColumn])
 
-case class CaseEntry(id: Long, start: Long, end: Long, props: List[Prop])
+case class CaseEntry(id: Long, start: Date, end: Date, props: List[Prop])
 
 case class Prop(key: String, value: String)
 

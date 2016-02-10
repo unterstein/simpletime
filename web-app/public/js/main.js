@@ -82,7 +82,9 @@ $(function () {
       if (data != undefined) {
         data.destroy();
       }
-      $(elem).datetimepicker();
+      $(elem).datetimepicker({
+        format: 'DD/MM/YYYY HH:mm'
+      });
     });
   }
 });
@@ -129,11 +131,16 @@ window.pickElement = function(entry, key) {
     case "id":
       return entry.id();
     case "start":
-      return new Date(entry.start());
+      return moment(entry.start(), "DD/MM/YYYY HH:mm").toDate();
     case "end":
-      return new Date(entry.end());
+      return moment(entry.end(), "DD/MM/YYYY HH:mm").toDate();
     default:
-      return entry.props().filter(function(element) { return element.key() == key();})[0].value();
+      var element = entry.props().filter(function(element) { return element.key() == key();});
+      if (element.size == 1) {
+        return element[0].value();
+      } else {
+        return "";
+      }
   }
 };
 
