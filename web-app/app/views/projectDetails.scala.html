@@ -26,7 +26,8 @@
                   <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), 'data-entrytype': columnKey}" />
                 <!-- /ko -->
                 <!-- ko if: columnType() == "TIME" -->
-                  <input data-bind="datepicker: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), 'data-entrytype': columnKey}" />
+                  <input data-bind="datepicker: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType)}" />
+                  <input type="hidden" class="numerate" data-bind="value: pickElement($parent, columnKey), attr: {'data-entrytype': columnKey}" />
                 <!-- /ko -->
               </td>
             </tr>

@@ -5,16 +5,14 @@ $(function () {
       //initialize datepicker with some optional options
       var options = allBindingsAccessor().datepickerOptions || {
             format: 'DD/MM/YYYY HH:mm',
-            defaultDate: valueAccessor()()
+            defaultDate: moment(valueAccessor()(), "x")
           };
       $(element).datetimepicker(options);
-      var picker = $(element).data('datetimepicker');
-
       //when a user changes the date, update the view model
       ko.utils.registerEventHandler(element, "dp.change", function (event) {
         var value = valueAccessor();
         if (ko.isObservable(value)) {
-          value(event.date);
+          value(event.date.unix() * 1000);
         }
       });
     },
@@ -87,7 +85,7 @@ $(function () {
       var columns = $(".columns");
       columns.each(function () {
         var index = columns.index(this);
-        $(this).find(".form-control").each(function () {
+        $(this).find(".numerate").each(function () {
           var type = $(this).data("entrytype");
           $(this).attr("name", "entries[" + index + "]." + type)
         });
@@ -130,7 +128,7 @@ window.pickClass = function(columnType) {
     case "TIME":
       return "form-control datetime";
     default:
-      return "form-control";
+      return "form-control numerate";
   }
 };
 
