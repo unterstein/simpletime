@@ -1,4 +1,35 @@
 $(function () {
+
+  ko.bindingHandlers.datepicker = {
+    init: function (element, valueAccessor, allBindingsAccessor) {
+      //initialize datepicker with some optional options
+      var options = allBindingsAccessor().datepickerOptions || {
+            format: 'DD/MM/YYYY HH:mm',
+            defaultDate: valueAccessor()()
+          };
+      $(element).datetimepicker(options);
+      var picker = $(element).data('datetimepicker');
+
+      //when a user changes the date, update the view model
+      ko.utils.registerEventHandler(element, "dp.change", function (event) {
+        var value = valueAccessor();
+        if (ko.isObservable(value)) {
+          value(event.date);
+        }
+      });
+    },
+    update: function (element, valueAccessor) {
+      var widget = $(element).data("datepicker");
+      //when the view model is updated, update the widget
+      if (widget) {
+        widget.date = ko.utils.unwrapObservable(valueAccessor());
+        if (widget.date) {
+          widget.setValue();
+        }
+      }
+    }
+  };
+
   var datamodel = $("#datamodel");
 
   if (datamodel.data("page") == "project") {
@@ -11,7 +42,6 @@ $(function () {
     $("#newColumn").click(function () {
       viewModel.columns.push(cloneObservable(column));
       updateNames();
-      initComponents();
       return false;
     });
 
@@ -21,12 +51,10 @@ $(function () {
         return $($(".deleteColumn")[index].closest("tr")).find(":input:first").val() == column.columnKey();
       });
       updateNames();
-      initComponents();
       return false;
     });
 
     updateNames();
-    initComponents();
 
     function updateNames() {
       var columns= $(".columns");
@@ -48,7 +76,6 @@ $(function () {
 
     $("#newEntry").click(function () {
       viewModel.entries.push(cloneObservable(entry));
-      initDatePicker();
       updateColumnNames();
       $(".focus-marker").find("tr:last :input:visible:first").focus().selectAll();
       return false;
@@ -61,7 +88,7 @@ $(function () {
       columns.each(function () {
         var index = columns.index(this);
         $(this).find(".form-control").each(function () {
-          var type = $(this).attr("entryType");
+          var type = $(this).data("entrytype");
           $(this).attr("name", "entries[" + index + "]." + type)
         });
       });
@@ -72,21 +99,17 @@ $(function () {
     return ko.mapping.fromJS(ko.toJS(observableObject));
   }
 
-  function initComponents() {
-    initDatePicker();
-  }
-
-  function initDatePicker() {
-    $(".datetime").each(function (i, elem) {
-      var data = $(elem).data("DateTimePicker");
-      if (data != undefined) {
-        data.destroy();
-      }
-      $(elem).datetimepicker({
-        format: 'DD/MM/YYYY HH:mm'
-      });
-    });
-  }
+  //function initDatePicker() {
+  //  $(".datetime").each(function (i, elem) {
+  //    var data = $(elem).data("DateTimePicker");
+  //    if (data != undefined) {
+  //      data.destroy();
+  //    }
+  //    $(elem).datetimepicker({
+  //      format: 'DD/MM/YYYY HH:mm'
+  //    });
+  //  });
+  //}
 });
 
 window.columnTypes = function() {
@@ -95,14 +118,8 @@ window.columnTypes = function() {
 
 window.pickType = function(columnType) {
   switch(columnType()) {
-    case "STRING":
-      return "text";
     case "BOOLEAN":
       return "checkbox";
-    case "TIME":
-      return "text";
-    case "ENUM":
-      return "text"; // TODO
     default:
       return "text";
   }
@@ -129,15 +146,15 @@ window.pickTableClass = function(columnType) {
 window.pickElement = function(entry, key) {
   switch(key()) {
     case "id":
-      return entry.id();
+      return entry.id;
     case "start":
-      return moment(entry.start(), "DD/MM/YYYY HH:mm").toDate();
+      return entry.start;
     case "end":
-      return moment(entry.end(), "DD/MM/YYYY HH:mm").toDate();
+      return entry.end;
     default:
       var element = entry.props().filter(function(element) { return element.key() == key();});
       if (element.size == 1) {
-        return element[0].value();
+        return element[0].value;
       } else {
         return "";
       }

@@ -22,7 +22,12 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns" class="columns">
               <td data-bind="attr: {class: pickTableClass(columnType)}">
-                <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), entryType: columnKey}" />
+                <!-- ko if: columnType() != "TIME" -->
+                  <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), 'data-entrytype': columnKey}" />
+                <!-- /ko -->
+                <!-- ko if: columnType() == "TIME" -->
+                  <input data-bind="datepicker: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), 'data-entrytype': columnKey}" />
+                <!-- /ko -->
               </td>
             </tr>
           </tbody>
