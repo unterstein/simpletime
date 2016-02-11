@@ -44,9 +44,9 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
               } else {
                 // create new, add and modify
                 val newEntry = new TimeEntry
-                newEntry.project = dbProject
                 newEntry
               }
+              updateEntry.project = dbProject
               updateEntry.startTime = entry.start
               updateEntry.endTime = entry.end
               updateEntry.properties.clear()
