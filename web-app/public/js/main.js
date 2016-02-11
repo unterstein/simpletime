@@ -7,7 +7,11 @@ $(function () {
             format: 'DD/MM/YYYY HH:mm',
             defaultDate: moment(valueAccessor()(), "x"),
             sideBySide: true,
-            calendarWeeks: true
+            calendarWeeks: true,
+            showTodayButton: true,
+            showClear: true,
+            showClose: true,
+            toolbarPlacement: "top"
           };
       $(element).datetimepicker(options);
       //when a user changes the date, update the view model
