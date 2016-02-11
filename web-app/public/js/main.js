@@ -5,7 +5,8 @@ $(function () {
       //initialize datepicker with some optional options
       var options = allBindingsAccessor().datepickerOptions || {
             format: 'DD/MM/YYYY HH:mm',
-            defaultDate: moment(valueAccessor()(), "x")
+            defaultDate: moment(valueAccessor()(), "x"),
+            sideBySide: true
           };
       $(element).datetimepicker(options);
       //when a user changes the date, update the view model
