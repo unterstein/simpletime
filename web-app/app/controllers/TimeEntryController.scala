@@ -24,7 +24,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
   }
 
   def exampleEntry(columns: List[CaseColumn]) = {
-    CaseEntry(-1L, 0L, 0L, columns.map(column => Prop(column.columnKey, "")).toList)
+    CaseEntry(-1L, System.currentTimeMillis(), System.currentTimeMillis(), columns.map(column => Prop(column.columnKey, "")).toList)
   }
 
   def post(projectHash: String) = AuthenticatedBaseAction {
