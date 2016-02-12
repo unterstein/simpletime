@@ -11,7 +11,8 @@ $(function () {
             showTodayButton: true,
             showClear: true,
             showClose: true,
-            toolbarPlacement: "top"
+            toolbarPlacement: "top",
+            stepping: 15
           };
       $(element).datetimepicker(options);
       //when a user changes the date, update the view model
