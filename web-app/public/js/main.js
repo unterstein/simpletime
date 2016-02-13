@@ -53,6 +53,7 @@ $(function () {
     $(document).on("click", ".deleteColumn", function () {
       var index = $(".deleteColumn").index(this);
       viewModel.columns.remove(function (column) {
+        // FIXME buggy if no columnKey present
         return $($(".deleteColumn")[index].closest("tr")).find(":input:first").val() == column.columnKey();
       });
       updateNames();
