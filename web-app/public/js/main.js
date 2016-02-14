@@ -104,18 +104,6 @@ $(function () {
   function cloneObservable(observableObject) {
     return ko.mapping.fromJS(ko.toJS(observableObject));
   }
-
-  //function initDatePicker() {
-  //  $(".datetime").each(function (i, elem) {
-  //    var data = $(elem).data("DateTimePicker");
-  //    if (data != undefined) {
-  //      data.destroy();
-  //    }
-  //    $(elem).datetimepicker({
-  //      format: 'DD/MM/YYYY HH:mm'
-  //    });
-  //  });
-  //}
 });
 
 window.columnTypes = function() {
