@@ -40,22 +40,12 @@ $(function () {
   if (datamodel.data("page") == "project") {
     var model = datamodel.data("model");
     var column = datamodel.data("column");
-    var viewModel = ko.mapping.fromJS(model);
+    window.viewModel = ko.mapping.fromJS(model);
 
     ko.applyBindings(viewModel);
 
     $("#newColumn").click(function () {
       viewModel.columns.push(cloneObservable(column));
-      updateNames();
-      return false;
-    });
-
-    $(document).on("click", ".deleteColumn", function () {
-      var index = $(".deleteColumn").index(this);
-      viewModel.columns.remove(function (column) {
-        // FIXME buggy if no columnKey present
-        return $($(".deleteColumn")[index].closest("tr")).find(":input:first").val() == column.columnKey();
-      });
       updateNames();
       return false;
     });
@@ -76,7 +66,7 @@ $(function () {
   if (datamodel.data("page") == "details") {
     var model = datamodel.data("model");
     var entry = datamodel.data("entry");
-    var viewModel = ko.mapping.fromJS(model);
+    window.viewModel = ko.mapping.fromJS(model);
 
     ko.applyBindings(viewModel);
 
@@ -135,6 +125,10 @@ window.pickTableClass = function(columnType) {
     default:
       return "";
   }
+};
+
+window.removeSelected = function(elem) {
+  viewModel.columns.remove(elem);
 };
 
 window.pickElement = function(entry, key) {
