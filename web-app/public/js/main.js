@@ -38,9 +38,8 @@ $(function () {
   var datamodel = $("#datamodel");
 
   if (datamodel.data("page") == "project") {
-    var model = datamodel.data("model");
     var column = datamodel.data("column");
-    window.viewModel = ko.mapping.fromJS(model);
+    window.viewModel = ko.mapping.fromJS(datamodel.data("model"));
 
     ko.applyBindings(viewModel);
 
@@ -64,9 +63,8 @@ $(function () {
   }
 
   if (datamodel.data("page") == "details") {
-    var model = datamodel.data("model");
     var entry = datamodel.data("entry");
-    window.viewModel = ko.mapping.fromJS(model);
+    window.viewModel = ko.mapping.fromJS(datamodel.data("model"));
 
     ko.applyBindings(viewModel);
 
