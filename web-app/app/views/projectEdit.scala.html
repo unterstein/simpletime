@@ -19,34 +19,45 @@
         </div>
       </div>
       <div class="form-group">
-        <table class="table table-bordered table-striped">
-          <thead>
-            <tr>
-              <th>@Messages("column.key")</th>
-              <th>@Messages("column.name")</th>
-              <th>@Messages("column.type")</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody data-bind="foreach: columns">
-            <tr class="columns">
-              <td><input class="form-control columnKey" data-bind="value: columnKey" ></td>
-              <td><input class="form-control columnName" data-bind="value: columnName" ></td>
-              <td>
-                <select class="form-control columnType" data-bind="options: columnTypes(), value: columnType"></select>
-              </td>
-              <td>
-                <a href="#" class="btn btn-default" onclick="return false;" data-bind="click: removeSelectedColumn"><i class="fa fa-trash"></i></a>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <a class="btn btn-default pull-right clearfix" id="newColumn" href="#" onclick="return false;">@Messages("column.new")</a>
+        <div class="row">
+          <div class="col-lg-12">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>@Messages("column.key")</th>
+                  <th>@Messages("column.name")</th>
+                  <th>@Messages("column.type")</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody data-bind="foreach: columns">
+                <tr class="columns">
+                  <td><input class="form-control columnKey" data-bind="value: columnKey" ></td>
+                  <td><input class="form-control columnName" data-bind="value: columnName" ></td>
+                  <td>
+                    <select class="form-control columnType" data-bind="options: columnTypes(), value: columnType"></select>
+                  </td>
+                  <td>
+                    <a href="#" class="btn btn-default" onclick="return false;" data-bind="click: removeSelectedColumn"><i class="fa fa-trash"></i></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <a class="btn btn-default pull-right clearfix" id="newColumn" href="#" onclick="return false;">@Messages("column.new")</a>
+          </div>
+        </div>
       </div>
       <div class="form-group">
-        <div class="col-lg-12">
-          <a class="btn btn-danger pull-left" href="@routes.ProjectController.listProjects">@Messages("back")</a>
-          <button type="submit" class="btn btn-primary pull-right">@Messages(if("new".equals(hash)) "create" else "edit")</button>
+        <div class="row">
+          <div class="col-lg-6">
+            <a class="btn btn-danger" href="@routes.ProjectController.listProjects">@Messages("back")</a>
+          </div>
+          <div class="col-lg-4">
+            @if("new".equals(hash) == false) { <a class="btn btn-info pull-right" href="@routes.TimeEntryController.listEntries(hash)">@Messages("details")</a> }
+          </div>
+          <div class="col-lg-2">
+            <button type="submit" class="btn btn-primary btn-lg pull-right">@Messages(if("new".equals(hash)) "create" else "edit")</button>
+          </div>
         </div>
       </div>
     </fieldset>
