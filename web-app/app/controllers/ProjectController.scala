@@ -92,7 +92,11 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
     projectForm.fill(CaseProject(Messages("project.default"), columns))
   }
 
-  def columnTypes: String = "[\"" + ProjectColumnType.values().map { e => e.name}.mkString("\",\"") + "\"]"
+  val columnTypes: String = {
+    "[\"" + ProjectColumnType.values()
+      .filter(v => v != ProjectColumnType.DELETE && v != ProjectColumnType.HIDDEN)
+      .map { e => e.name}.mkString("\",\"") + "\"]"
+  }
 
   val projectForm: Form[CaseProject] = Form(
     mapping(
