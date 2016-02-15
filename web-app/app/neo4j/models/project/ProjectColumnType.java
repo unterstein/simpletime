@@ -5,6 +5,7 @@ package neo4j.models.project;
  */
 public enum ProjectColumnType {
   HIDDEN, // just a hidden value, like ID or something
+  DELETE, // delete column
   STRING, // a string value
   BOOLEAN, // a boolean value
   TIME, // a time value

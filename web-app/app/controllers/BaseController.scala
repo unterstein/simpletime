@@ -61,4 +61,6 @@ trait BaseController extends Controller with I18nSupport {
   }
 
   def defaultColumns()(implicit lang: play.api.i18n.Lang) = List(CaseColumn("id", Messages("entry.id"), ProjectColumnType.HIDDEN.name()), CaseColumn("start", Messages("entry.start"), ProjectColumnType.TIME.name()), CaseColumn("end", Messages("entry.end"), ProjectColumnType.TIME.name()))
+
+  def trashColumn()(implicit lang: play.api.i18n.Lang) = List(CaseColumn("trash", Messages("delete"), ProjectColumnType.DELETE.name()))
 }

@@ -129,6 +129,14 @@ window.removeSelectedColumn = function(elem) {
   viewModel.columns.remove(elem);
 };
 
+window.removeSelectedEntry = function(elem) {
+  // important: return a function wrapping the actual model remove call,
+  // because we do a function call in the markup for the data-binding (we need $parent at this point)
+  return function() {
+    viewModel.entries.remove(elem);
+  }
+};
+
 window.pickElement = function(entry, key) {
   switch(key()) {
     case "id":

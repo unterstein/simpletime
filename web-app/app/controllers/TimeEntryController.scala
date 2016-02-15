@@ -20,7 +20,7 @@ class TimeEntryController @Inject()(messages: MessagesApi) extends BaseControlle
       val entries = dbEntries.map(entry => CaseEntry(entry.id, entry.startTime, entry.endTime, mapToProps(if (entry.properties == null) Map() else entry.properties.toMap)))
 
       val columns = projectToColumnList(dbProject)
-      Ok(views.html.projectDetails(projectHash, dbProject.name, entryForm.fill(CaseEntries(entries.toList, defaultColumns ++ columns)), exampleEntry(columns)))
+      Ok(views.html.projectDetails(projectHash, dbProject.name, entryForm.fill(CaseEntries(entries.toList, defaultColumns ++ columns ++ trashColumn)), exampleEntry(columns)))
   }
 
   def exampleEntry(columns: List[CaseColumn]) = {

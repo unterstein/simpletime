@@ -22,12 +22,15 @@
           <tbody data-bind="foreach: entries">
             <tr data-bind="foreach: $parent.columns" class="columns">
               <td data-bind="attr: {class: pickTableClass(columnType)}">
-                <!-- ko if: columnType() != "TIME" -->
+                <!-- ko if: columnType() != "TIME" && columnType() != "DELETE" -->
                   <input data-bind="value: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType), 'data-entrytype': columnKey}" />
                 <!-- /ko -->
                 <!-- ko if: columnType() == "TIME" -->
                   <input data-bind="datepicker: pickElement($parent, columnKey), attr: {type: pickType(columnType), class: pickClass(columnType)}" />
                   <input type="hidden" class="numerate" data-bind="value: pickElement($parent, columnKey), attr: {'data-entrytype': columnKey}" />
+                <!-- /ko -->
+                <!-- ko if: columnType() == "DELETE" -->
+                  <a href="#" class="btn btn-default" onclick="return false;" data-bind="click: removeSelectedEntry($parent)"><i class="fa fa-trash"></i></a>
                 <!-- /ko -->
               </td>
             </tr>
