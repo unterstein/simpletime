@@ -127,7 +127,7 @@ window.pickTableClass = function(columnType) {
   }
 };
 
-window.removeSelected = function(elem) {
+window.removeSelectedColumn = function(elem) {
   viewModel.columns.remove(elem);
 };
 
