@@ -10,7 +10,6 @@ import play.api.data.Forms._
 import play.api.i18n.{Messages, MessagesApi}
 
 import scala.collection.JavaConversions._
-import scala.collection.JavaConverters._
 
 class ProjectController @Inject()(messages: MessagesApi) extends BaseController {
 
