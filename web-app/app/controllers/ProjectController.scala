@@ -11,6 +11,11 @@ import play.api.i18n.{Messages, MessagesApi}
 
 import scala.collection.JavaConversions._
 
+/**
+ * Controller to edit project settings, like project name, columns, ...
+ *
+ * @author Johannes Unterstein (unterstein@me.com)
+ */
 class ProjectController @Inject()(messages: MessagesApi) extends BaseController {
 
   def listProjects = AuthenticatedBaseAction {

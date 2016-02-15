@@ -10,6 +10,11 @@ import play.api.i18n.MessagesApi
 
 import scala.collection.JavaConversions._
 
+/**
+ * Controller to edit time entries related to a project.
+ *
+ * @author Johannes Unterstein (unterstein@me.com)
+ */
 class TimeEntryController @Inject()(messages: MessagesApi) extends BaseController {
 
   def listEntries(projectHash: String) = AuthenticatedBaseAction {

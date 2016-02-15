@@ -10,6 +10,8 @@ import play.api.mvc._
 import scala.collection.JavaConversions._
 
 /**
+ * Base controller handling user authentication handling and common helpers.
+ *
  * @author Johannes Unterstein (unterstein@me.com)
  */
 trait BaseController extends Controller with I18nSupport {
