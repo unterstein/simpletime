@@ -29,20 +29,21 @@ class ProjectController @Inject()(messages: MessagesApi) extends BaseController 
         formWithErrors => Ok(views.html.projectEdit(hash, formWithErrors, initialColumn, columnTypes)),
         value => {
           // TODO remove "new" hack
-          if ("new".equals(hash)) {
-            val project = new Project
-            project.name = value.name
-            project.user = request.user
-            project.hash = HashHelper.uuid()
-            project.setColumns(createColumns(value))
-            Neo4jProvider.get().projectRepository.save(project)
-            Redirect(routes.ProjectController.edit(project.hash))
+          val project = if ("new".equals(hash)) {
+            val newProject = new Project
+            newProject.name = value.name
+            newProject.user = request.user
+            newProject.hash = HashHelper.uuid()
+            newProject.setColumns(createColumns(value))
+            newProject
           } else {
             val dbProject = Neo4jProvider.get().projectRepository.findByHashAndUser(hash, request.user)
             dbProject.name = value.name
             dbProject.setColumns(createColumns(value))
-            Redirect(routes.ProjectController.edit(hash))
+            dbProject
           }
+          Neo4jProvider.get().projectRepository.save(project)
+          Redirect(routes.ProjectController.edit(project.hash))
         }
       )
   }
