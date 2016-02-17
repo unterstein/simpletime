@@ -13,6 +13,7 @@ edit=Edit
 back=Back
 save=Save
 delete=Delete
+sum=Sum
 
 # projects
 project.new=New project
