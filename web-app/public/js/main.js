@@ -130,7 +130,7 @@ window.sum = ko.pureComputed(function() {
   $("tbody tr").each(function() {
     sum += $(this).find("[data-entrytype='end']").val() - $(this).find("[data-entrytype='start']").val();
   });
-  return sum;
+  return Math.round(sum / 1000 / 60 / 60) + " h"; // TODO format
 }, window.viewModel);
 
 window.removeSelectedColumn = function(elem) {
