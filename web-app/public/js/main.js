@@ -125,7 +125,7 @@ window.pickTableClass = function(columnType) {
   }
 };
 
-window.sum = ko.computed(function() {
+window.sum = ko.pureComputed(function() {
   var sum = 0;
   $("tbody tr").each(function() {
     sum += $(this).find("[data-entrytype='end']").val() - $(this).find("[data-entrytype='start']").val();
